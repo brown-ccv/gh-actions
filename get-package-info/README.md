@@ -1,14 +1,23 @@
-# get-package-info
+# Get Package Info
 
-This action takes in the path to a `package.json` and sets the following outputs:
+Gets the package name and version from a `package.json` file
 
-* `package_version`: `version` field from the `package.json`
-* `package_name`: `name` field from the `package.json`
+## Inputs
 
-It assumes that the following actions have been run:
+### `path`
 
-* `actions/checkout`
-* `actions/setup-node`
+**Required** The path of the `package.json`. Default `./package.json`.
+
+## Outputs
+
+### `package_name`
+
+The name of the package from the `name` field.
+
+### `package_version`
+
+The version of the package from the `version` field.
+
 
 ## Example `workflow.yml`
 

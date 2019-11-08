@@ -2,6 +2,8 @@ name: 'Get Package Info'
 inputs:
   path:
     description: location of package.json file
+    required: true
+    default: package.json
 outputs:
   package_version:
     description: main package version
