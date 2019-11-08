@@ -1,8 +1,8 @@
 const core = require('@actions/core');
 const path = require('path')
 
-const path = core.getInput('path', { required: true });
-const fullPath = path.join(process.cwd(), path)
+const filePath = core.getInput('path', { required: true });
+const fullPath = path.join(process.cwd(), filePath)
 
 const package = require(fullPath)
 
