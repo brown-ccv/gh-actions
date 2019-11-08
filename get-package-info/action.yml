@@ -1,0 +1,12 @@
+name: 'Get Package Info'
+inputs:
+  path:
+    description: location of package.json file
+outputs:
+  package_version:
+    description: main package version
+  package_name:
+    description: main package name
+runs:
+  using: 'node12'
+  main: 'main.js'
