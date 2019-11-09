@@ -4,10 +4,12 @@ const path = require('path')
 const filePath = core.getInput('path', { required: true });
 const fullPath = path.join(process.cwd(), filePath)
 
-const package = require(fullPath)
+const pkg = require(fullPath)
 
-const package_version = package.version
-const package_name = package.name
+const packageVersion = pkg.version
+const packageName = (process.platform === 'win32')
+  ? pkg.name.replace('-', '_')
+  : pkg.name
 
-core.setOutput('package_version', package_version)
-core.setOutput('package_name', package_name)
+core.setOutput('package_version', packageVersion)
+core.setOutput('package_name', packageName)
