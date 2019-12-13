@@ -1,0 +1,42 @@
+# Comment on PR
+
+Adds Code Review Checklist Comments to a PR.  Currently designed to work specifically with ccv-website
+
+## Inputs
+
+### `GITHUB_TOKEN`
+
+**Required** `{{ secrets. GITHUB_TOKEN }}`
+
+## Outputs
+
+None
+
+## Example `workflow.yml`
+
+This workflow tests, build, and packages electron apps.  It uses the `package_name` and `package_version` to upload the correct artifacts to the GitHub action run.
+
+```
+name: PR Commenter
+
+on:
+  pull_request:
+    branch:
+      - develop
+
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Comment on new PR
+      uses: brown-ccv/gh-actions/comment-pr-checklist@pr-checklist
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
