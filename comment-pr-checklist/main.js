@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
 import { context, GitHub } from "@actions/github";
-import { findPreviousComment, createComment, findFirstComment, numContentReviewers } from "./comment";
+import { findPreviousComment, createComment, findFirstComment, numContentReviewers } from "./comments";
 
 async function run() {
   try {
