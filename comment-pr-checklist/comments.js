@@ -27,6 +27,8 @@ async function findFirstComment(octokit, repo, issue_number) {
     ...repo,
     issue_number
   });
+	console.log(comments)
+	console.log(comments[0])
   return comments[0].body;
 }
 
