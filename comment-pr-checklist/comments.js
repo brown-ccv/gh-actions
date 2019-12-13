@@ -1,4 +1,4 @@
-export function getCommentTypes(body) {
+function getCommentTypes(body) {
   let comments = ["Technical"]
 
   bug = new RegExp('^.*\[x\].*Bug.*$')
@@ -22,7 +22,7 @@ export function getCommentTypes(body) {
   return comments
 }
 
-export async function findFirstComment(octokit, repo, issue_number) {
+async function findFirstComment(octokit, repo, issue_number) {
   const { data: comments } = await octokit.issues.listComments({
     ...repo,
     issue_number
@@ -30,7 +30,7 @@ export async function findFirstComment(octokit, repo, issue_number) {
   return comments[0].body;
 }
 
-export async function findPreviousComment(octokit, repo, issue_number) {
+async function findPreviousComment(octokit, repo, issue_number) {
   const HEADER = `<!-- Code Review Pull Request Comment - Technical -->`; // Always a technical comment
   const { data: comments } = await octokit.issues.listComments({
     ...repo,
@@ -39,7 +39,7 @@ export async function findPreviousComment(octokit, repo, issue_number) {
   return comments.find(comment => comment.body.startsWith(HEADER));
 }
 
-export async function createComment(octokit, repo, issue_number, comment_type) {
+async function createComment(octokit, repo, issue_number, comment_type) {
   const HEADER = `<!-- Code Review Pull Request Comment - ${comment_type} -->`;
   let body
   if (comment_type === "Technical") {
@@ -66,3 +66,10 @@ const contentChecklist = `
 - [ ] Will this make sense to an outsider?
 - [ ] Is this information redundant with other places in the website?
 `
+
+module.exports = {
+	getCommentTypes,
+	findFirstComment,
+	findPreviousComment,
+	createComment
+}
