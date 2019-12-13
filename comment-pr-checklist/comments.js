@@ -54,15 +54,25 @@ async function createComment(octokit, repo, issue_number, comment_type) {
 
 const techChecklist = `
 ## Technical Reviewer Checklist
+
+Make sure the updates follow the contribution guidelines and the code is clear.  Some of the things you should check:
+
 - [ ] All commits use conventional style
 - [ ] Website builds
-- [ ] More things
+- [ ] Code is readable and easily understandable, with comments, but not commented out code
+- [ ] Spacing and indentation is constistent
+- [ ] README was updated (if needed) and update is comprehensive and useful
+- [ ] No extraneous files added, especially a .env or similar
 `
 const contentChecklist = `
 ## Content Reviewer Checklist
+
+Make sure the updates are consistent with the CCV website as a whole, the content is in the right place, and is easily understandable/accessible.  Some of the things you should check:
+
 - [ ] Check spelling
 - [ ] Will this make sense to an outsider?
 - [ ] Is this information redundant with other places in the website?
+- [ ] Does this look how you would expect?
 `
 
 module.exports = {
