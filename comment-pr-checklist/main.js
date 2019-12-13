@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const { context, GitHub } = require('@actions/github');
-const { findPreviousComment, createComment, findFirstComment, numContentReviewers } = require("./comments");
+const { findPreviousComment, createComment, findFirstComment, getCommentTypes } = require("./comments");
 
 async function run() {
   try {
