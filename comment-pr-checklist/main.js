@@ -23,8 +23,7 @@ async function run() {
       const first = await findFirstComment(octokit, repo, number)
       const commentTypes = getCommentTypes(first)
       for (comment in commentTypes) {
-        console.log(comment)
-        await createComment(octokit, repo, number, comment);
+        await createComment(octokit, repo, number, commentTypes[comment]);
       }
 
     }
