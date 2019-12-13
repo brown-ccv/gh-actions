@@ -1,6 +1,6 @@
-import * as core from "@actions/core";
-import { context, GitHub } from "@actions/github";
-import { findPreviousComment, createComment, findFirstComment, numContentReviewers } from "./comments";
+const core = require('@actions/core');
+const { context, GitHub } = require('@actions/github');
+const { findPreviousComment, createComment, findFirstComment, numContentReviewers } = require("./comments");
 
 async function run() {
   try {
