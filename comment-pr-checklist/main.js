@@ -6,14 +6,13 @@ async function run() {
   try {
     const repo = context.repo;
     const number = context.payload.pull_request.number;
-    const body = core.getInput("message");
     const githubToken = core.getInput("GITHUB_TOKEN");
     if (!number) {
       core.setFailed("This action only works for pull_request");
       return;
     }
-    if (!body || !githubToken) {
-      core.setFailed("invalid input: please check your workflow");
+    if (!githubToken) {
+      core.setFailed("must supply github token");
       return;
     }
     const octokit = new GitHub(githubToken);
