@@ -1,0 +1,10 @@
+
+name: "Code Review Pull Request Comment"
+description: "Create comment on pull request, if exists does nothing."
+author: "mcmcgrath13"
+inputs:
+  GITHUB_TOKEN:
+    description: "set secrets.GITHUB_TOKEN here"
+runs:
+  using: "node12"
+  main: "main.js"
