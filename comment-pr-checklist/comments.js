@@ -1,11 +1,11 @@
 function getCommentTypes(body) {
   let comments = ["Technical"]
 
-  let bug = new RegExp('^.*\[[xX]\].*Bug.*$')
-  let feat = new RegExp('^.*\[[xX]\].*Feature.*$')
-  let data = new RegExp('^.*\[[xX]\].*Data.*$')
-  let content = new RegExp('^.*\[[xX]\].*Content.*$')
-  let other = new RegExp('^.*\[[xX]\].*Other.*$')
+  let bug = new RegExp('\[[xX]\] :bug: Bug')
+  let feat = new RegExp('\[[xX]\] :dragon: Feature')
+  let data = new RegExp('\[[xX]\] :frog: Data ')
+  let content = new RegExp('\[[xX]\] :dog: Content')
+  let other = new RegExp('\[[xX]\] :blowfish: Other')
 
   if (other.test(body) || feat.test(body)) {
     comments.push("Content 1")
