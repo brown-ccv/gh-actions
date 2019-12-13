@@ -12,9 +12,7 @@ function getCommentTypes(body) {
     comments.push("Content 2")
   } else if (content.test(body)) {
     comments.push("Content")
-  } else if (bug.test(body) || data.test(body)) {
-    continue // no more reviews
-  } else {
+  } else if (!bug.test(body) && !data.test(body)) { // fall through to two content reviewers
     comments.push("Content 1")
     comments.push("Content 2")
   }
