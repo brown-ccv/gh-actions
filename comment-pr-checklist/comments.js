@@ -23,13 +23,12 @@ function getCommentTypes(body) {
 }
 
 async function findFirstComment(octokit, repo, issue_number) {
-  const { data: comments } = await octokit.issues.listComments({
+  const { data: comments } = await octokit.issues.get({
     ...repo,
     issue_number
   });
 	console.log(comments)
-	console.log(comments[0])
-  return comments[0].body;
+  return comments.body;
 }
 
 async function findPreviousComment(octokit, repo, issue_number) {
