@@ -5,7 +5,7 @@ const { findPreviousComment, createComment, findFirstComment, numContentReviewer
 async function run() {
   try {
     const repo = context.repo;
-    const number = context?.payload?.pull_request?.number;
+    const number = context.payload.pull_request.number;
     const body = core.getInput("message");
     const githubToken = core.getInput("GITHUB_TOKEN");
     if (!number) {
