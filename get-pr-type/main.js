@@ -17,7 +17,6 @@ async function run() {
 
     const pr = await getPrBody(octokit, repo, number)
     const changeTypes = getChangeTypes(pr)
-    console.log(changeTypes)
     core.setOutput('change_types', changeTypes)
 
   } catch ({ message }) {
