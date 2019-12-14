@@ -14,7 +14,7 @@ None
 
 ## Example `workflow.yml`
 
-This workflow tests, build, and packages electron apps.  It uses the `package_name` and `package_version` to upload the correct artifacts to the GitHub action run.
+This workflow runs when a PR is made to the `develop` branch.  It then adds the appropriate checklists, if checklists have not previously been added.
 
 ```
 name: PR Commenter
