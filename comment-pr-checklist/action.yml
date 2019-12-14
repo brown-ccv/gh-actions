@@ -1,10 +1,16 @@
 
-name: "Code Review Pull Request Comment"
+name: "Comment on PR from File"
 description: "Create comment on pull request, if exists does nothing."
 author: "mcmcgrath13"
 inputs:
   GITHUB_TOKEN:
     description: "set secrets.GITHUB_TOKEN here"
+  message_file:
+    description: "file containing markdown to be added to the message"
+  message_id:
+    description: "string to identify this message, once a message with this id is added - won't be updated/added again"
+    default: 'Default'
+
 runs:
   using: "node12"
   main: "dist/index.js"

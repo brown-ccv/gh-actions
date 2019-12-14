@@ -1,6 +1,13 @@
-# Comment on PR
+# Get PR Type
 
-Adds Code Review Checklist Comments to a PR.  Currently designed to work specifically with ccv-website
+Given a PR, returns a pipe delimited string with the types of changes on that PR.  Assumes PR uses the following convention:
+```
+- [ ] :bug: Bug
+- [ ] :dragon: Feature
+- [ ] :frog: Data (data folder - people/opportunities)
+- [ ] :dog: Content (content folder)
+- [ ] :blowfish: Other. Specify:
+```
 
 ## Inputs
 
@@ -10,7 +17,9 @@ Adds Code Review Checklist Comments to a PR.  Currently designed to work specifi
 
 ## Outputs
 
-None
+### `change_types`
+
+Example: `"|bug|content|"`
 
 ## Example `workflow.yml`
 
