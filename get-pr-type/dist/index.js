@@ -1960,14 +1960,6 @@ function applyAcceptHeader (res, headers) {
 
 /***/ }),
 
-/***/ 266:
-/***/ (function() {
-
-eval("require")("fs-extra");
-
-
-/***/ }),
-
 /***/ 280:
 /***/ (function(module, exports) {
 
@@ -8243,9 +8235,7 @@ function sync (path, options) {
 /***/ }),
 
 /***/ 833:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-const fs = __webpack_require__(266)
+/***/ (function(module) {
 
 function getChangeTypes(body) {
   let changes = "|"
