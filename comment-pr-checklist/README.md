@@ -14,7 +14,7 @@ None
 
 ## Example `workflow.yml`
 
-This workflow runs when a PR is made to the `develop` branch. It then adds the checklist file, if a commend with this `message_id` has not previously been added.
+This workflow runs when a PR is made to the `develop` branch.  It then adds the appropriate checklists, if checklists have not previously been added.
 
 ```
 name: PR Commenter
