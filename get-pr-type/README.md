@@ -23,7 +23,7 @@ Example: `"|bug|content|"`
 
 ## Example `workflow.yml`
 
-This workflow runs when a PR is made to the `develop` branch. It then adds the appropriate checklists, if checklists have not previously been added.
+This workflow runs when a PR is made to the `develop` branch. It checks what type of changes the PR contains, then depending on that output, adds checklists to the PR (see `../comment-pr-checklist/`).
 
 ```
 name: PR Commenter
@@ -40,12 +40,34 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: Comment on new PR
-      uses: brown-ccv/gh-actions/comment-pr-checklist@master
+    - name: Get PR Change Types
+      id: pr_type
+      uses: brown-ccv/gh-actions/get-pr-type@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Technical Comment PR
+      uses: brown-ccv/gh-actions/comment-master@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        message_id: "Technical"
+        message_file: '.github/tech_code_review.md'
+    - name: Content 1 Comment on new PR
+      if: contains(steps.pr_type.outputs.change_types, 'content') || contains(steps.pr_type.outputs.change_types, 'feature') || contains(steps.pr_type.outputs.change_types, 'other')
+      uses: brown-ccv/gh-actions/comment-master@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        message_id: "Content 1"
+        message_file: '.github/content_code_review.md'
+    - name: Content 2 Comment on new PR
+      if: contains(steps.pr_type.outputs.change_types, 'feature') || contains(steps.pr_type.outputs.change_types, 'other')
+      uses: brown-ccv/gh-actions/comment-master@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        message_id: "Content 2"
+        message_file: '.github/content_code_review.md'
+
 ```
