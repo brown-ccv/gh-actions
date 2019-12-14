@@ -6,7 +6,7 @@ Adds Code Review Checklist Comments to a PR.  Currently designed to work specifi
 
 ### `GITHUB_TOKEN`
 
-**Required** `{{ secrets. GITHUB_TOKEN }}`
+**Required** `{{ secrets.GITHUB_TOKEN }}`
 
 ## Outputs
 
