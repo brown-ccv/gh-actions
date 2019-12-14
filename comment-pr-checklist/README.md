@@ -36,7 +36,7 @@ jobs:
       with:
         node-version: 12.x
     - name: Comment on new PR
-      uses: brown-ccv/gh-actions/comment-pr-checklist@pr-checklist
+      uses: brown-ccv/gh-actions/comment-pr-checklist@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
