@@ -1,7 +1,7 @@
 {
-  "name": "comment-pr-checklist",
+  "name": "get-pr-type",
   "version": "1.0.0",
-  "description": "Comment on a PR with a code review checklist or other .md file",
+  "description": "Get the types of changes in a PR",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,8 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.0",
-    "@actions/github": "^2.0.0",
-    "fs-extra": "^8.1.0"
+    "@actions/github": "^2.0.0"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.20.5"

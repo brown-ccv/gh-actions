@@ -1,0 +1,14 @@
+
+name: "Get Change Types of PR"
+description: "Create comment on pull request, if exists does nothing."
+author: "mcmcgrath13"
+inputs:
+  GITHUB_TOKEN:
+    description: "set secrets.GITHUB_TOKEN here"
+outputs:
+  change_types:
+    description: 'string containign types of changes in PR'
+
+runs:
+  using: "node12"
+  main: "dist/index.js"

@@ -39,4 +39,6 @@ jobs:
       uses: brown-ccv/gh-actions/comment-pr-checklist@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        message_id: 'checklist'
+        message_file: 'default_comment.md'
 ```

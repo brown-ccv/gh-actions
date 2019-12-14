@@ -1,14 +1,12 @@
 const core = require('@actions/core');
 const { context, GitHub } = require('@actions/github');
-const { findPreviousComment, createComment, findFirstComment, getCommentTypes } = require("./comments");
+const { getPrBody, getChangeTypes } = require("./comments");
 
 async function run() {
   try {
     const repo = context.repo;
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
-    const messageFile = core.getInput("message_file", {required: true});
-    const messageId = core.getInput("message_id");
 
     if (!number) {
       core.setFailed("This action only works for pull_request");
@@ -16,12 +14,11 @@ async function run() {
     }
 
     const octokit = new GitHub(githubToken);
-    const previous = await findPreviousComment(octokit, repo, number, messageId);
-    if (previous) {
-      return;
-    } else {
-      await createComment(octokit, repo, number, messageId, messageFile);
-    }
+
+    const pr = await getPrBody(octokit, repo, number)
+    const changeTypes = getChangeTypes(pr)
+    core.setOutput('change_types', changeTypes)
+
   } catch ({ message }) {
     core.setFailed(message);
   }
