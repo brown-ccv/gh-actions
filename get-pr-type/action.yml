@@ -5,6 +5,9 @@ author: "mcmcgrath13"
 inputs:
   GITHUB_TOKEN:
     description: "set secrets.GITHUB_TOKEN here"
+outputs:
+  change_types:
+    description: 'string containign types of changes in PR'
 
 runs:
   using: "node12"
