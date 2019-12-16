@@ -1,12 +1,20 @@
 # Comment on PR
 
-Adds Code Review Checklist Comments to a PR.  Currently designed to work specifically with ccv-website
+Adds a Code Review Checklist (or any MarkDown file) as a comment to a PR.
 
 ## Inputs
 
 ### `GITHUB_TOKEN`
 
 **Required** `{{ secrets.GITHUB_TOKEN }}`
+
+### `message_file`
+
+**Required** path to the file that should be added as a comment to the PR
+
+### `message_id`
+
+**Optional** a string identifier to add as a comment on the message.  Only one message with a given `message_id` will be posted to a PR.  If you are using this action multiple times within a workflow, it is recommended to customize the `message_id`.  Default is `"Default"`.
 
 ## Outputs
 
