@@ -1,7 +1,7 @@
 {
-  "name": "add-wait-label",
+  "name": "comment-pr-checklist",
   "version": "1.0.0",
-  "description": "Given a duration in days, apply a label to a PR of waiting or wait complete",
+  "description": "Comment on a PR with a code review checklist or other .md file",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,8 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.0",
-    "@actions/github": "^2.0.0"
+    "@actions/github": "^2.0.0",
+    "fs-extra": "^8.1.0"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.20.5"

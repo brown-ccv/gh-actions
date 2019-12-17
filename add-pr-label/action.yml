@@ -1,0 +1,13 @@
+
+name: "Add label to PR"
+description: "Add label to pull request, if exists does nothing."
+author: "mcmcgrath13"
+inputs:
+  GITHUB_TOKEN:
+    description: "set secrets.GITHUB_TOKEN here"
+  label:
+    description: "label to add to pull request"
+
+runs:
+  using: "node12"
+  main: "dist/index.js"

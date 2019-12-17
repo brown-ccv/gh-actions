@@ -3856,11 +3856,6 @@ async function run() {
     const waitLabel = core.getInput("wait_label")
     const doneLabel = core.getInput("done_waiting_label")
 
-    if (!number) {
-      core.setFailed("This action only works for pull_request");
-      return;
-    }
-
     const octokit = new GitHub(githubToken)
 
     const prs = await getPrIds(octokit, repo, waitLabel)
