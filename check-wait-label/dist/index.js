@@ -1986,13 +1986,14 @@ async function removeLabel(octokit, repo, issue_number, oldLabel) {
 		issue_number
 	})
 
-	console.log(labels)
+	console.log(labels.find(label => label.name === oldLabel))
+	console.log(oldLabel)
 
 	if (labels.find(label => label.name === oldLabel)) {
 		await octokit.issues.removeLabel({
 			...repo,
 			issue_number,
-			oldLabel
+			name: oldLabel
 		})
 	}
 }
