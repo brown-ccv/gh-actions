@@ -1,7 +1,8 @@
 async function getPrIds(octokit, repo, label) {
   const { data: prs } = await octokit.issues.listForRepo({
     ...repo,
-    state: 'open'
+    state: 'open',
+		labels: label
   });
 	console.log(prs)
   return prs.map(pr => prs.id);
