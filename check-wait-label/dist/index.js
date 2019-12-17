@@ -1963,14 +1963,15 @@ function applyAcceptHeader (res, headers) {
 /***/ 278:
 /***/ (function(module) {
 
-async function getPrIds(octokit, repo, label) {
+async function getPrIds(octokit, repo, waitLabel) {
   const { data: prs } = await octokit.issues.listForRepo({
     ...repo,
-    state: 'open',
-		labels: [label]
+    state: 'open'
   });
-	console.log(prs)
-  return prs.map(pr => prs.number);
+	const labelPrs = prs.filter(pr => pr.labels.map(label => label.name).includes(waitLabel))
+	console.log(labelPrs)
+	console.log(prs[0])
+  return labelPrs.map(pr => pr.number);
 }
 
 async function getPrTime(octokit, repo, issue_number) {
