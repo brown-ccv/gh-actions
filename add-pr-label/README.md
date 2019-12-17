@@ -1,6 +1,6 @@
-# Comment on PR
+# Add PR Label
 
-Adds Code Review Checklist Comments to a PR.  Currently designed to work specifically with ccv-website
+Add a label to a Pull Request
 
 ## Inputs
 
@@ -8,13 +8,17 @@ Adds Code Review Checklist Comments to a PR.  Currently designed to work specifi
 
 **Required** `{{ secrets.GITHUB_TOKEN }}`
 
+### `label`
+
+**Required** name of label to add to PR
+
 ## Outputs
 
 None
 
 ## Example `workflow.yml`
 
-This workflow runs when a PR is made to the `develop` branch. It then adds the checklist file, if a commend with this `message_id` has not previously been added.
+This workflow runs when a PR is made to the `develop` branch. It then adds the `waiting` label.
 
 ```
 name: PR Commenter
@@ -23,7 +27,6 @@ on:
   pull_request:
     branch:
       - develop
-
 
 jobs:
   comment:
@@ -35,10 +38,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: Comment on new PR
-      uses: brown-ccv/gh-actions/comment-pr-checklist@master
+    - name: Label PR
+      uses: brown-ccv/gh-actions/add-pr-label@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        message_id: 'checklist'
-        message_file: 'default_comment.md'
+        label: 'waiting'
 ```

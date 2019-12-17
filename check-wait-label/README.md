@@ -1,13 +1,6 @@
-# Get PR Type
+# Check Wait Label
 
-Given a PR, returns a pipe delimited string with the types of changes on that PR.  Assumes PR uses the following convention:
-```
-- [ ] :bug: Bug
-- [ ] :dragon: Feature
-- [ ] :frog: Data (data folder - people/opportunities)
-- [ ] :dog: Content (content folder)
-- [ ] :blowfish: Other. Specify:
-```
+Checks PRs on a repo for a waiting label, and if found checks if the `wait_time` has passed.  If enough time has passed, remove the `wait_label` and add the `done_waiting_label`.
 
 ## Inputs
 
@@ -15,27 +8,38 @@ Given a PR, returns a pipe delimited string with the types of changes on that PR
 
 **Required** `{{ secrets.GITHUB_TOKEN }}`
 
+### `wait_label`
+
+**Optional** name of label to look for in PRs. Default: `waiting`
+
+### `wait_time`
+
+**Required** Number of days the PR must have been open before marking the wait as done.
+
+### `done_waiting_label`
+
+**Optional** name of label to add to PR if done waiting. Default: `ready`
+
 ## Outputs
 
-### `change_types`
-
-Example: `"|bug|content|"`
+None
 
 ## Example `workflow.yml`
 
-This workflow runs when a PR is made to the `develop` branch. It checks what type of changes the PR contains, then depending on that output, adds checklists to the PR (see `../comment-pr-checklist/`).
+This workflow runs every 15 minutes on the default branch. It looks for PRs that have the label `4 day wait` and `2 day wait` and if they have waited 4 and 2 days respectively, changes the label to `ready`.
 
 ```
-name: PR Commenter
+name: Check Wait Times
 
 on:
-  pull_request:
+  schedule:
+    - cron:  '*/15 * * * *'
+  push:
     branch:
-      - develop
-
+      - chore-pr-comments # FOR TESTING
 
 jobs:
-  comment:
+  check:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,30 +48,18 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: Get PR Change Types
-      id: pr_type
-      uses: brown-ccv/gh-actions/get-pr-type@master
+    - name: Check 4 day waits
+      uses: brown-ccv/gh-actions/check-wait-label@master
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Technical Comment PR
-      uses: brown-ccv/gh-actions/comment-master@master
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        wait_label: "4 day wait"
+        wait_time: 4
+        done_waiting_label: ready
+    - name: Check 2 day waits
+      uses: brown-ccv/gh-actions/check-wait-label@master
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        message_id: "Technical"
-        message_file: '.github/tech_code_review.md'
-    - name: Content 1 Comment on new PR
-      if: contains(steps.pr_type.outputs.change_types, 'content') || contains(steps.pr_type.outputs.change_types, 'feature') || contains(steps.pr_type.outputs.change_types, 'other')
-      uses: brown-ccv/gh-actions/comment-master@master
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        message_id: "Content 1"
-        message_file: '.github/content_code_review.md'
-    - name: Content 2 Comment on new PR
-      if: contains(steps.pr_type.outputs.change_types, 'feature') || contains(steps.pr_type.outputs.change_types, 'other')
-      uses: brown-ccv/gh-actions/comment-master@master
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        message_id: "Content 2"
-        message_file: '.github/content_code_review.md'
-
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        wait_label: "2 day wait"
+        wait_time: 2
+        done_waiting_label: ready
 ```
