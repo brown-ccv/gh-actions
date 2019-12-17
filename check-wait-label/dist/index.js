@@ -2007,7 +2007,8 @@ async function applyLabel(octokit, repo, issue_number, newLabel) {
 module.exports = {
 	getPrTime,
 	applyLabel,
-	removeLabel
+	removeLabel,
+	getPrIds
 }
 
 
