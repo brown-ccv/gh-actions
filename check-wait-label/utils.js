@@ -4,8 +4,6 @@ async function getPrIds(octokit, repo, waitLabel) {
     state: 'open'
   });
 	const labelPrs = prs.filter(pr => pr.labels.map(label => label.name).includes(waitLabel))
-	console.log(labelPrs)
-	console.log(prs[0])
   return labelPrs.map(pr => pr.number);
 }
 
@@ -23,7 +21,7 @@ async function removeLabel(octokit, repo, issue_number, oldLabel) {
 		issue_number
 	})
 
-	if (labels.find(label => comment.name.equals(oldLabel))) {
+	if (labels.find(label => label.name.equals(oldLabel))) {
 		await octokit.issues.removeLabel({
 			...repo,
 			issue_number,
