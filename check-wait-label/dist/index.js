@@ -1966,9 +1966,9 @@ function applyAcceptHeader (res, headers) {
 async function getPrIds(octokit, repo, label) {
   const { data: prs } = await octokit.issues.listForRepo({
     ...repo,
-    state: 'open',
-		labels: [label]
+    state: 'open'
   });
+	console.log(prs)
   return prs.map(pr => prs.id);
 }
 
