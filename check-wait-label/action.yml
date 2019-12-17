@@ -1,0 +1,19 @@
+
+name: "Check Wait Status"
+description: "Add/update label on PRs with whether it is in waiting period"
+author: "mcmcgrath13"
+inputs:
+  GITHUB_TOKEN:
+    description: "set secrets.GITHUB_TOKEN here"
+  wait_time:
+    description: "integer duration (days) of waiting period"
+  wait_label:
+    description: "Label to check if still waiting"
+    default: "waiting"
+  done_waiting_label:
+    description: "Label to set if done waiting"
+    default: "ready"
+
+runs:
+  using: "node12"
+  main: "dist/index.js"
