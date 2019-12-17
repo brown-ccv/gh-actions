@@ -1986,6 +1986,8 @@ async function removeLabel(octokit, repo, issue_number, oldLabel) {
 		issue_number
 	})
 
+	console.log(labels)
+
 	if (labels.find(label => label.name === oldLabel)) {
 		await octokit.issues.removeLabel({
 			...repo,
@@ -3861,8 +3863,6 @@ async function run() {
 
     const prs = await getPrIds(octokit, repo, waitLabel)
 
-    console.log(prs)
-
     for (const i in prs) {
       let number = prs[i]
       let prTime = await getPrTime(octokit, repo, number)
@@ -3872,9 +3872,6 @@ async function run() {
       if (timeWaited - waitTime >= 0) {
         await applyLabel(octokit, repo, number, doneLabel)
         await removeLabel(octokit, repo, number, waitLabel)
-      } else {
-        await removeLabel(octokit, repo, number, doneLabel) // just in case
-        await applyLabel(octokit, repo, number, waitLabel)
       }
     }
 
