@@ -1999,7 +1999,7 @@ async function applyLabel(octokit, repo, issue_number, newLabel) {
 	await octokit.issues.addLabels({
 		...repo,
 		issue_number,
-		labels: newLabel
+		labels: [newLabel]
 	})
 }
 
