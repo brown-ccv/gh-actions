@@ -1967,7 +1967,7 @@ async function getPrIds(octokit, repo, label) {
   const { data: prs } = await octokit.issues.listForRepo({
     ...repo,
     state: 'open',
-		labels: label
+		labels: [label]
   });
   return prs.map(pr => prs.id);
 }
@@ -3860,6 +3860,8 @@ async function run() {
     const octokit = new GitHub(githubToken)
 
     const prs = await getPrIds(octokit, repo, waitLabel)
+
+    console.log(prs)
 
     for (const i in prs) {
       let number = prs[i]

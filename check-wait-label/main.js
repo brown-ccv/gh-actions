@@ -14,6 +14,8 @@ async function run() {
 
     const prs = await getPrIds(octokit, repo, waitLabel)
 
+    console.log(prs)
+
     for (const i in prs) {
       let number = prs[i]
       let prTime = await getPrTime(octokit, repo, number)
