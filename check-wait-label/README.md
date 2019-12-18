@@ -1,6 +1,6 @@
 # Check Wait Label
 
-Checks PRs on a repo for a waiting label, and if found checks if the `wait_time` has passed.  If enough time has passed, remove the `wait_label` and add the `done_waiting_label`.
+Checks PRs on a repo for a waiting label, and if found checks if the `wait_time` has passed.  If enough time has passed, remove the `wait_label` and add the `done_waiting_label`.  The calculation excludes weekend days from the wait time.
 
 ## Inputs
 

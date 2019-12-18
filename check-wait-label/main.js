@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const { context, GitHub } = require('@actions/github');
-const { getPrTime, applyLabel, removeLabel, getPrIds } = require("./utils");
+const { getPrTime, applyLabel, removeLabel, getPrIds, getWeekendDaysCount } = require("./utils");
 
 async function run() {
   try {
@@ -17,8 +17,10 @@ async function run() {
     for (const i in prs) {
       let number = prs[i]
       let prTime = await getPrTime(octokit, repo, number)
-      let nowTime = Date.now()
-      let timeWaited = (nowTime - prTime) / 24 / 60 / 60 / 1000
+      let nowTime = new Date(Date.now())
+      let timeElapsed = (nowTime - prTime) / 24 / 60 / 60 / 1000
+      let numWeekend = getWeekendDaysCount(prTime, nowTime)
+      let timeWaited = timeElapsed - numWeekend
 
       if (timeWaited - waitTime >= 0) {
         await applyLabel(octokit, repo, number, doneLabel)

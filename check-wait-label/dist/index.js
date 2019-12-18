@@ -1977,7 +1977,8 @@ async function getPrTime(octokit, repo, issue_number) {
     ...repo,
     issue_number
   });
-  return Date.parse(issue.created_at);
+	let create_time = new Date(issue.created_at)
+  return create_time
 }
 
 async function removeLabel(octokit, repo, issue_number, oldLabel) {
@@ -2003,12 +2004,27 @@ async function applyLabel(octokit, repo, issue_number, newLabel) {
 	})
 }
 
+function getWeekendDaysCount(startDate, endDate) {
+  let count = 0;
+  let curDate = startDate;
+  while (curDate <= endDate) {
+    var dayOfWeek = curDate.getDay();
+    if ((dayOfWeek == 6) || (dayOfWeek == 0)) {
+		  count++
+		}
+
+		curDate.setDate(curDate.getDate() + 1);
+  }
+  return count;
+}
+
 
 module.exports = {
 	getPrTime,
 	applyLabel,
 	removeLabel,
-	getPrIds
+	getPrIds,
+	getWeekendDaysCount
 }
 
 
@@ -3847,7 +3863,7 @@ isStream.transform = function (stream) {
 
 const core = __webpack_require__(470);
 const { context, GitHub } = __webpack_require__(469);
-const { getPrTime, applyLabel, removeLabel, getPrIds } = __webpack_require__(278);
+const { getPrTime, applyLabel, removeLabel, getPrIds, getWeekendDaysCount } = __webpack_require__(278);
 
 async function run() {
   try {
@@ -3864,8 +3880,10 @@ async function run() {
     for (const i in prs) {
       let number = prs[i]
       let prTime = await getPrTime(octokit, repo, number)
-      let nowTime = Date.now()
-      let timeWaited = (nowTime - prTime) / 24 / 60 / 60 / 1000
+      let nowTime = new Date(Date.now())
+      let timeElapsed = (nowTime - prTime) / 24 / 60 / 60 / 1000
+      let numWeekend = getWeekendDaysCount(prTime, nowTime)
+      let timeWaited = timeElapsed - numWeekend
 
       if (timeWaited - waitTime >= 0) {
         await applyLabel(octokit, repo, number, doneLabel)
