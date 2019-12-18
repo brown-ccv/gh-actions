@@ -12,7 +12,8 @@ async function getPrTime(octokit, repo, issue_number) {
     ...repo,
     issue_number
   });
-  return Date.parse(issue.created_at);
+	let create_time = new Date(issue.created_at)
+  return create_time
 }
 
 async function removeLabel(octokit, repo, issue_number, oldLabel) {

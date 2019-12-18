@@ -17,7 +17,7 @@ async function run() {
     for (const i in prs) {
       let number = prs[i]
       let prTime = await getPrTime(octokit, repo, number)
-      let nowTime = Date.now()
+      let nowTime = new Date(Date.now())
       let timeElapsed = (nowTime - prTime) / 24 / 60 / 60 / 1000
       let numWeekend = getWeekendDaysCount(prTime, nowTime)
       let timeWaited = timeElapsed - numWeekend
