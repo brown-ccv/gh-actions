@@ -38,10 +38,25 @@ async function applyLabel(octokit, repo, issue_number, newLabel) {
 	})
 }
 
+function getWeekendDaysCount(startDate, endDate) {
+  let count = 0;
+  let curDate = startDate;
+  while (curDate <= endDate) {
+    var dayOfWeek = curDate.getDay();
+    if ((dayOfWeek == 6) || (dayOfWeek == 0)) {
+		  count++
+		}
+
+		curDate.setDate(curDate.getDate() + 1);
+  }
+  return count;
+}
+
 
 module.exports = {
 	getPrTime,
 	applyLabel,
 	removeLabel,
-	getPrIds
+	getPrIds,
+	getWeekendDaysCount
 }
