@@ -8,12 +8,15 @@ async function getPrIds(octokit, repo, waitLabel) {
 }
 
 async function getPrTime(octokit, repo, issue_number) {
-  const { data: issue } = await octokit.issues.get({
+  const { data: commits } = await octokit.pulls.listCommits({
     ...repo,
     issue_number
   });
-	let create_time = new Date(issue.created_at)
-  return create_time
+	let lastUpdated = Math.max.apply(commits.map(commit => new Date(commit.commit.author.date))
+
+	let lastUpdatedDate = new Date(lastUpdated)
+
+  return lastUpdatedDate
 }
 
 async function removeLabel(octokit, repo, issue_number, oldLabel) {
