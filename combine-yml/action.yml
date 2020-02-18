@@ -1,13 +1,6 @@
 name: "Combine YAML files in repo."
 description: "Combine all .yml files present in the repo."
 author: "fernandogelin"
-inputs:
-  files:
-    description: "Glob pattern for files to merge."
-    required: true
-  follow-symbolic-links:
-    description: "Indicates whether to follow symbolic links"
-    default: true
 outputs:
   combined_yml:
     description: "combined yml file"

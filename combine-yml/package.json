@@ -5,7 +5,10 @@
   "main": "index.js",
   "dependencies": {
     "@actions/core": "^1.2.2",
-    "@actions/glob": "^0.1.0"
+    "@actions/glob": "^0.1.0",
+    "merge-yaml": "^1.1.0",
+    "yaml": "^1.7.2",
+    "yaml-merge": "git://github.com/incuna/node-yaml-merge.git#0.0.2"
   },
   "devDependencies": {},
   "scripts": {
