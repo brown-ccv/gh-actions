@@ -987,7 +987,7 @@ const glob = __webpack_require__(938);
 const globber = glob.create("*/*.yml", {
   followSymbolicLinks: false
 });
-globber.globGenerator().then(files => files.map(file => console.log(file)));
+globber.glob().then(files => files.map(file => console.log(file)));
 
 
 /***/ }),
