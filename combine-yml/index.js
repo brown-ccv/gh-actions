@@ -17,6 +17,7 @@ globber.then(glob =>
         master[path.split("/")[6]].push(yaml.parse(file));
       });
       fs.writeFileSync("file.json", JSON.stringify(master));
+      console.log(master);
     })
     .catch(error => console.log(error))
 );
