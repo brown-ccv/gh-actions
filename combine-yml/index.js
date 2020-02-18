@@ -6,6 +6,4 @@ const globOptions = {
     core.getInput("follow-symbolic-links").toUpper() !== "FALSE"
 };
 const globber = glob.create(core.getInput("files"), globOptions);
-for await (const file of globber.globGenerator()) {
-  console.log(file);
-}
+globber.globGenerator().then(files => files.map(file => console.log(file)));
