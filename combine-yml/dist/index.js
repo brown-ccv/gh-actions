@@ -982,14 +982,11 @@ exports.DefaultGlobber = DefaultGlobber;
 /***/ 622:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
-const core = __webpack_require__(827);
 const glob = __webpack_require__(938);
 
-const globOptions = {
-  followSymbolicLinks:
-    core.getInput("follow-symbolic-links").toUpper() !== "FALSE"
-};
-const globber = glob.create(core.getInput("files"), globOptions);
+const globber = glob.create("*/*.yml", {
+  followSymbolicLinks: false
+});
 globber.globGenerator().then(files => files.map(file => console.log(file)));
 
 
