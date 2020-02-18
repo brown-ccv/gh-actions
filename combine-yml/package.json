@@ -1,0 +1,17 @@
+{
+  "name": "combine-yml",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@actions/core": "^1.2.2",
+    "@actions/glob": "^0.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Fernando Gelin",
+  "license": "MIT"
+}
