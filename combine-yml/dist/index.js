@@ -4664,7 +4664,7 @@ const core = __webpack_require__(827);
 const yaml = __webpack_require__(962);
 const fs = __webpack_require__(747);
 
-const patterns = ["**/apps/*.yml", "**/software/*.yml", "**/talks/*.yml"];
+const patterns = ["./apps/*.yml", "./software/*.yml", "./talks/*.yml"];
 const globber = glob.create(patterns.join("\n"));
 
 console.log(process.cwd());
@@ -4674,6 +4674,7 @@ globber.then(glob =>
     .then(arr => {
       let master = { apps: [], software: [], talks: [] };
       arr.map(path => {
+        console.log(path);
         const category = path.split("/")[6];
         const file = fs.readFileSync(path, "utf8");
         master[path.split("/")[6]].push(yaml.parse(file));
