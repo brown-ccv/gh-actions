@@ -6,6 +6,7 @@ const fs = require("fs");
 const patterns = ["**/apps/*.yml", "**/software/*.yml", "**/talks/*.yml"];
 const globber = glob.create(patterns.join("\n"));
 
+console.log(process.cwd());
 globber.then(glob =>
   glob
     .glob()
