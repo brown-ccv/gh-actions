@@ -4664,7 +4664,7 @@ const core = __webpack_require__(827);
 const yaml = __webpack_require__(962);
 const fs = __webpack_require__(747);
 
-const patterns = ["*/*.yml"];
+const patterns = ["**/apps/*.yml", "**/software/*.yml", "**/talks/*.yml"];
 const globber = glob.create(patterns.join("\n"));
 
 globber.then(glob =>

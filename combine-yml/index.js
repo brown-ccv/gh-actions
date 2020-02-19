@@ -3,7 +3,7 @@ const core = require("@actions/core");
 const yaml = require("yaml");
 const fs = require("fs");
 
-const patterns = ["*/*.yml"];
+const patterns = ["**/apps/*.yml", "**/software/*.yml", "**/talks/*.yml"];
 const globber = glob.create(patterns.join("\n"));
 
 globber.then(glob =>
