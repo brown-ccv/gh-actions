@@ -1,13 +1,6 @@
-# Get PR Type
+# Parse Task Issue Template
 
-Given a PR, returns a pipe delimited string with the types of changes on that PR.  Assumes PR uses the following convention:
-```
-- [ ] :bug: Bug
-- [ ] :dragon: Feature
-- [ ] :frog: Data (data folder - people/opportunities)
-- [ ] :dog: Content (content folder)
-- [ ] :blowfish: Other. Specify:
-```
+Given an Issue, returns a string with the details of the task. 
 
 ## Inputs
 
@@ -17,21 +10,55 @@ Given a PR, returns a pipe delimited string with the types of changes on that PR
 
 ## Outputs
 
-### `change_types`
+### `file_content`
 
-Example: `"|bug|content|"`
+Example: `"taskName: null
+          links:
+            deployment: 'https://example.com'
+            sourceCode: 'https://github.com/example/task'
+          framework:
+            library: LIBRARY
+            language: LANGUAGE
+          lab:
+            name: null
+            institution: null
+            principalInvestigator: null
+            developers:
+              - DEVELOPER_1
+              - DEVELOPER_2
+            website: 'https://example.com'
+          publication:
+            doi: 'doi:###/###.###'
+            url: 'https://example.com'
+          platform:
+            desktop:
+              windows: true
+              linux: true
+              mac: false
+            mobile:
+              ios: false
+              android: false
+          features:
+            electron: false
+            browser: true
+            docker: false
+            eegTrigger: true
+            mturk: true
+          tags:
+            - TAG_1
+            - TAG_2
+            - TAG_3
+            - TAG_4"`
 
 ## Example `workflow.yml`
 
-This workflow runs when a PR is made to the `develop` branch. It checks what type of changes the PR contains, then depending on that output, adds checklists to the PR (see `../comment-pr-checklist/`).
+This workflow runs when an Issue is created. It checks the label of the issue, and accordingly sets the output as the file content for data request.
 
 ```
-name: PR Commenter
+name: Task Issue Parser
 
 on:
-  pull_request:
-    branch:
-      - develop
+  issues: {types: opened}
 
 
 jobs:
@@ -44,30 +71,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: Get PR Change Types
-      id: pr_type
-      uses: brown-ccv/gh-actions/get-pr-type@master
+    - name: Parse Task Issue
+      id: issue_parser
+      uses: brown-ccv/gh-actions/parse-task-issue@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Technical Comment PR
-      uses: brown-ccv/gh-actions/comment-pr-checklist@master
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        message_id: "Technical"
-        message_file: '.github/tech_code_review.md'
-    - name: Content 1 Comment on new PR
-      if: contains(steps.pr_type.outputs.change_types, 'content') || contains(steps.pr_type.outputs.change_types, 'feature') || contains(steps.pr_type.outputs.change_types, 'other')
-      uses: brown-ccv/gh-actions/comment-pr-checklist@master
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        message_id: "Content 1"
-        message_file: '.github/content_code_review.md'
-    - name: Content 2 Comment on new PR
-      if: contains(steps.pr_type.outputs.change_types, 'feature') || contains(steps.pr_type.outputs.change_types, 'other')
-      uses: brown-ccv/gh-actions/comment-pr-checklist@master
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        message_id: "Content 2"
-        message_file: '.github/content_code_review.md'
 
 ```
