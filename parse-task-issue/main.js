@@ -11,7 +11,7 @@ async function run() {
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
 
     if (!number) {
-      core.setFailed("This action only works for pull_request");
+      core.setFailed("This action only works for issue");
       return;
     }
 
