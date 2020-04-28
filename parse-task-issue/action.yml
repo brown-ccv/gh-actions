@@ -1,0 +1,14 @@
+
+name: "Task Issue Parser"
+description: "Add task to registry or add a bug"
+author: ""
+inputs:
+  GITHUB_TOKEN:
+    description: "set secrets.GITHUB_TOKEN here"
+outputs:
+  file_content:
+    description: 'string containing contents of the file'
+
+runs:
+  using: "node12"
+  main: "dist/index.js"
