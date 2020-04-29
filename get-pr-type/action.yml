@@ -7,7 +7,7 @@ inputs:
     description: "set secrets.GITHUB_TOKEN here"
 outputs:
   change_types:
-    description: 'string containign types of changes in PR'
+    description: 'string containing types of changes in PR'
 
 runs:
   using: "node12"

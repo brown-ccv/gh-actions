@@ -4,10 +4,8 @@ const { getIssueBody, getYMLFileContent } = require("./util");
 
 async function run() {
   try {
-    const fileContents = "";
     const repo = context.repo;
-    const params = context.issue;
-    const number = params.number;
+    const number = context.issue.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
 
     if (!number) {
@@ -18,9 +16,8 @@ async function run() {
     const octokit = new GitHub(githubToken);
 
     const issue = await getIssueBody(octokit, repo, number)
-    const label = issue.labels[0].name
-    if(label === 'data request'){
-      fileContents = getYMLFileContent(issue)
+    if(issue.labels.filter(function(item){ return item['name']==='data request'; })!==[]){
+      var fileContents = getYMLFileContent(issue)
     }
     core.setOutput('file_content', fileContents)
 

@@ -12,43 +12,43 @@ Given an Issue, returns a string with the details of the task.
 
 ### `file_content`
 
-Example: `"taskName: null
+Example: `"taskName: optio
           links:
-            deployment: 'https://example.com'
-            sourceCode: 'https://github.com/example/task'
+            deployment: http://lorna.net
+            sourceCode: https://github.com/laborum/sunt
           framework:
-            library: LIBRARY
-            language: LANGUAGE
+            library: React JS
+            language: JavaScript
           lab:
-            name: null
-            institution: null
-            principalInvestigator: null
+            name: enim Lab
+            institution: Stanton - Hauck
+            principalInvestigator: Dr. Ransom Jacobi
             developers:
-              - DEVELOPER_1
-              - DEVELOPER_2
-            website: 'https://example.com'
+              - Armand Volkman
+              - Susie Zulauf
+            website: http://jacklyn.com
           publication:
-            doi: 'doi:###/###.###'
-            url: 'https://example.com'
+            doi: doi:e44d2533/02b5.44a2
+            url: https://rickey.info
           platform:
             desktop:
-              windows: true
-              linux: true
-              mac: false
+              windows: false
+              linux: false
+              mac: true
             mobile:
               ios: false
-              android: false
+              android: true
           features:
             electron: false
-            browser: true
+            browser: false
             docker: false
-            eegTrigger: true
+            eegTrigger: false
             mturk: true
           tags:
-            - TAG_1
-            - TAG_2
-            - TAG_3
-            - TAG_4"`
+            - iusto
+            - odit
+            - quisquam
+            - provident"`
 
 ## Example `workflow.yml`
 

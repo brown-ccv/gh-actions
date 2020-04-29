@@ -7,11 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "package": "ncc build %npm_package_main% -o dist"
   },
-  "author": "",
+  "author": "Rashi1997",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@actions/github": "^2.1.1"
+    "@actions/github": "^2.1.1",
+    "js-yaml": "^3.13.1"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.22.1"
