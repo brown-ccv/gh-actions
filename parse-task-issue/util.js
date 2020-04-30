@@ -21,7 +21,7 @@ function removeJunkAndValidateYML(contents){
   contents.tags = contents.tags.filter(function(v) {return v.startsWith("TAG")===false});
   if(contents.taskName === null || 
     contents.links.sourceCode === null ||
-    contents.links.sourceCode === 'https://example.com' ||
+    contents.links.sourceCode === 'https://github.com/example/task' ||
     contents.lab.name === null ||
     contents.lab.institution === null  
     ){
