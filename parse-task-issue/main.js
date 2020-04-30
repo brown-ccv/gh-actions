@@ -17,7 +17,11 @@ async function run() {
 
     const issue = await getIssueBody(octokit, repo, number)
     if(issue.labels.filter(function(item){ return item['name']==='data request'; })!==[]){
-      var fileContents = getYMLFileContent(issue)
+      var fileContents = getYMLFileContent(issue);
+      if(fileContents===null){
+        core.setFailed("The issue yml template is not valid.");
+        return;
+      }
     }
     core.setOutput('file_content', fileContents)
 
