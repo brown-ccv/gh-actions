@@ -12,13 +12,19 @@ Given an Issue, returns a string with the details of the task.
 
 ### `file_content`
 
-Example: `"taskName: optio
+Example: 
+```
+          "taskName: optio 
           links:
             deployment: http://lorna.net
             sourceCode: https://github.com/laborum/sunt
+            publication: https://rickey.info
           framework:
-            library: React JS
-            language: JavaScript
+            library: 
+              - React JS
+              - Vue JS
+            language: 
+              - JavaScript
           lab:
             name: enim Lab
             institution: Stanton - Hauck
@@ -27,9 +33,6 @@ Example: `"taskName: optio
               - Armand Volkman
               - Susie Zulauf
             website: http://jacklyn.com
-          publication:
-            doi: doi:e44d2533/02b5.44a2
-            url: https://rickey.info
           platform:
             desktop:
               windows: false
@@ -48,7 +51,8 @@ Example: `"taskName: optio
             - iusto
             - odit
             - quisquam
-            - provident"`
+            - provident"
+```
 
 ## Example `workflow.yml`
 
