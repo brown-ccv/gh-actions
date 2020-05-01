@@ -77,7 +77,7 @@ jobs:
         node-version: 12.x
     - name: Parse Task Issue
       id: issue_parser
-      uses: brown-ccv/gh-actions/parse-task-issue@parse-task-issue
+      uses: brown-ccv/gh-actions/parse-task-issue@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
