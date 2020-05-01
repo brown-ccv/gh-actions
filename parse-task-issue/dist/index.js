@@ -2894,7 +2894,7 @@ function getYMLFileContent(issue) {
   let start = issue.body.indexOf("taskName")
   let end = issue.body.lastIndexOf("```")
   var newtask = jsyaml.load(issue.body.substring(start, end));
-  if(removeJunkAndValidateYML(contents)===null) {return null};
+  if(removeJunkAndValidateYML(newtask)===null) {return null};
   let yamlStr = jsyaml.safeDump(newtask)
   return yamlStr;
 }
