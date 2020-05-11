@@ -2896,7 +2896,9 @@ function getYMLFileContent(issue) {
   var newtask = jsyaml.load(issue.body.substring(start, end));
   if(removeJunkAndValidateYML(newtask)===null) {return null};
   let yamlStr = jsyaml.safeDump(newtask)
-  return yamlStr;
+  // remove non alpha numeric characters from the file name and join using - to get file name
+  let file_name = (newtask.taskName.replace(/[^a-z0-9+\s]+/gi, '')).split(" ").join("-").toLowerCase() + ".yml";
+  return [yamlStr, file_name];
 }
 
 
@@ -27816,13 +27818,14 @@ async function run() {
 
     const issue = await getIssueBody(octokit, repo, number)
     if(issue.labels.filter(function(item){ return item['name']==='data request'; })!==[]){
-      var fileContents = getYMLFileContent(issue);
-      if(fileContents===null){
+      const file = getYMLFileContent(issue);
+      if(file[0]===null || file[1]===null || file[1]===""){
         core.setFailed("The issue yml template is not valid.");
         return;
       }
     }
-    core.setOutput('file_content', fileContents)
+    core.setOutput('file_name', file[1])
+    core.setOutput('file_content', file[0])
 
   } catch ({ message }) {
     core.setFailed(message);
