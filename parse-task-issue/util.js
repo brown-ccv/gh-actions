@@ -8,7 +8,7 @@ function getYMLFileContent(issue) {
   var newtask = jsyaml.load(issue.body.substring(start, end));
   if(removeJunkAndValidateYML(newtask)===null) {return null};
   let yamlStr = jsyaml.safeDump(newtask)
-  return [yamlStr, newtask.taskName];
+  return [yamlStr, newtask.taskName+'.yml'];
 }
 
 
