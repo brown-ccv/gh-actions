@@ -23,10 +23,8 @@ async function run() {
         return;
       }
     }
-    const fileContent = file[0];
-    const fileName = file[1];
-    core.setOutput('file_name', fileName)
-    core.setOutput('file_content', fileContent)
+    core.setOutput('file_name', file[1])
+    core.setOutput('file_content', file[0])
 
   } catch ({ message }) {
     core.setFailed(message);
