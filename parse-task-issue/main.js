@@ -17,14 +17,16 @@ async function run() {
 
     const issue = await getIssueBody(octokit, repo, number)
     if(issue.labels.filter(function(item){ return item['name']==='data request'; })!==[]){
-      var file = getYMLFileContent(issue);
+      const file = getYMLFileContent(issue);
       if(file[0]===null || file[1]===null || file[1]===""){
         core.setFailed("The issue yml template is not valid.");
         return;
       }
     }
-    core.setOutput('file_name', file[1])
-    core.setOutput('file_content', file[0])
+    const fileContent = file[0];
+    const fileName = file[1];
+    core.setOutput('file_name', fileName)
+    core.setOutput('file_content', fileContent)
 
   } catch ({ message }) {
     core.setFailed(message);
