@@ -23,8 +23,8 @@ async function run() {
         return;
       }
     }
-    core.setOutput('file_content', file[0])
     core.setOutput('file_name', file[1])
+    core.setOutput('file_content', file[0])
 
   } catch ({ message }) {
     core.setFailed(message);
