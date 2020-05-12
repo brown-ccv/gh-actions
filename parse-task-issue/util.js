@@ -9,7 +9,7 @@ function getYMLFileContent(issue) {
   if(removeJunkAndValidateYML(newtask)===null) {return null};
   let yamlStr = jsyaml.safeDump(newtask)
   // remove non alpha numeric characters from the file name and join using - to get file name
-  let file_name = (newtask.taskName.replace(/[^a-z0-9+\s]+/gi, '')).split(" ").join("-").toLowerCase() + ".yml";
+  let file_name = (newtask.taskName.replace(/[^a-z0-9+\s]+/gi, '')).split(" ").join("-").toLowerCase();
   return [yamlStr, file_name, newtask.taskName];
 }
 
