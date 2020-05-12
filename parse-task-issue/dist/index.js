@@ -27823,9 +27823,9 @@ async function run() {
         core.setFailed("The issue yml template is not valid.");
         return;
       }
+      core.setOutput('file_name', file[1])
+      core.setOutput('file_content', file[0])
     }
-    core.setOutput('file_name', file[1])
-    core.setOutput('file_content', file[0])
 
   } catch ({ message }) {
     core.setFailed(message);
