@@ -6,6 +6,8 @@ inputs:
   GITHUB_TOKEN:
     description: "set secrets.GITHUB_TOKEN here"
 outputs:
+  issue_number:
+    description: 'issue number'
   task_name:
     description: 'string: name of the task'
   file_name:
