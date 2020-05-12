@@ -10,7 +10,7 @@ function getYMLFileContent(issue) {
   let yamlStr = jsyaml.safeDump(newtask)
   // remove non alpha numeric characters from the file name and join using - to get file name
   let file_name = (newtask.taskName.replace(/[^a-z0-9+\s]+/gi, '')).split(" ").join("-").toLowerCase() + ".yml";
-  return [yamlStr, file_name];
+  return [yamlStr, file_name, newtask.taskName];
 }
 
 

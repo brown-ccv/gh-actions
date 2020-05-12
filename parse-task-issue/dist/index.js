@@ -2898,7 +2898,7 @@ function getYMLFileContent(issue) {
   let yamlStr = jsyaml.safeDump(newtask)
   // remove non alpha numeric characters from the file name and join using - to get file name
   let file_name = (newtask.taskName.replace(/[^a-z0-9+\s]+/gi, '')).split(" ").join("-").toLowerCase() + ".yml";
-  return [yamlStr, file_name];
+  return [yamlStr, file_name, newtask.taskName];
 }
 
 
@@ -27823,6 +27823,7 @@ async function run() {
         core.setFailed("The issue yml template is not valid.");
         return;
       }
+      core.setOutput('task_name', file[2])
       core.setOutput('file_name', file[1])
       core.setOutput('file_content', file[0])
     }
