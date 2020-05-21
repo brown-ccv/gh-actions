@@ -17,11 +17,12 @@ function getYMLFileContent(issue) {
 function removeJunkAndValidateYML(contents){
   if(contents.links.deployment === "https://example.com"){ contents.links.deployment = null };
   if(contents.links.publication === "https://example.com"){ contents.links.publication = null };
-  contents.framework.library = contents.framework.library.filter(function(v) {return v.startsWith("LIBRARY")===false});
-  contents.framework.language = contents.framework.language.filter(function(v) {return v.startsWith("LANGUAGE")===false});
-  contents.lab.developers = contents.lab.developers.filter(function(v) {return v.startsWith("DEVELOPER")===false});
-  contents.tags = contents.tags.filter(function(v) {return v.startsWith("TAG")===false});
+  contents.framework.library = (contents.framework.library!=null)?contents.framework.library.filter(function(v) {return v.startsWith("LIBRARY")===false}):null;
+  contents.framework.language = (contents.framework.language!=null)?contents.framework.language.filter(function(v) {return v.startsWith("LANGUAGE")===false}):null;
+  contents.lab.developers = (contents.framework.developers!=null)?contents.lab.developers.filter(function(v) {return v.startsWith("DEVELOPER")===false}):null;
+  contents.tags = (contents.framework.tags!=null)?contents.tags.filter(function(v) {return v.startsWith("TAG")===false}):null;
   if(contents.taskName === null || 
+    contents.taskName === 'Example Task' ||
     contents.links.sourceCode === null ||
     contents.links.sourceCode === 'https://github.com/example/task' ||
     contents.lab.name === null ||
