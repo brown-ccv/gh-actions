@@ -2907,8 +2907,8 @@ function removeJunkAndValidateYML(contents){
   if(contents.links.publication === "https://example.com"){ contents.links.publication = null };
   contents.framework.library = (contents.framework.library!=null)?contents.framework.library.filter(function(v) {return v.startsWith("LIBRARY")===false}):null;
   contents.framework.language = (contents.framework.language!=null)?contents.framework.language.filter(function(v) {return v.startsWith("LANGUAGE")===false}):null;
-  contents.lab.developers = (contents.framework.developers!=null)?contents.lab.developers.filter(function(v) {return v.startsWith("DEVELOPER")===false}):null;
-  contents.tags = (contents.framework.tags!=null)?contents.tags.filter(function(v) {return v.startsWith("TAG")===false}):null;
+  contents.lab.developers = (contents.lab.developers!=null)?contents.lab.developers.filter(function(v) {return v.startsWith("DEVELOPER")===false}):null;
+  contents.tags = (contents.tags!=null)?contents.tags.filter(function(v) {return v.startsWith("TAG")===false}):null;
   if(contents.taskName === null || 
     contents.taskName === 'Example Task' ||
     contents.links.sourceCode === null ||
