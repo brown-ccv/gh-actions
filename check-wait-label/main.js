@@ -6,7 +6,7 @@ async function run() {
   try {
     const repo = context.repo;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
-    const waitTime = parseInt(core.getInput("wait_time", {required: true}))
+    const waitTime = parseFloat(core.getInput("wait_time", {required: true}))
     const waitLabel = core.getInput("wait_label")
     const doneLabel = core.getInput("done_waiting_label")
 
