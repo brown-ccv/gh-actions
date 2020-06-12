@@ -21,7 +21,7 @@ async function run() {
 
     const octokit = github.getOctokit(githubToken);
 
-    const globber = await glob.create(globPattern.join('\n'))
+    const globber = await glob.create(globPattern)
     let files = await globber.glob()
     console.warn(files)
 
