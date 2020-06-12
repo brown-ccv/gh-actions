@@ -17903,7 +17903,7 @@ async function run() {
     const previous = await findPreviousComment(octokit, repo, number, messageId);
     if (previous) {
       console.warn(previous)
-      await updateComment(octokit, repo, number, previous[0].number, messageId, checkComment)
+      await updateComment(octokit, repo, number, previous.id, messageId, checkComment)
     } else {
       await createComment(octokit, repo, number, messageId, checkComment);
     }
