@@ -56,9 +56,7 @@ async function run() {
 
     const noBinary = core.getInput('no_binary')
     const profanitySureness = core.getInput('profanity_sureness')
-    const checkComment = checkAlex(filesToCheck, noBinary, profanitySureness)
-
-
+    const checkComment = await checkAlex(filesToCheck, noBinary, profanitySureness)
 
     const previous = await findPreviousComment(octokit, repo, number, messageId);
     if (previous) {

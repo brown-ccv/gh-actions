@@ -51,7 +51,7 @@ async function checkFile(file, options) {
 
 function formatRow(msg) {
 	let status = `:warning:`
-	if msg.fatal {
+	if (msg.fatal) {
 		status = `:stop_sign:`
 	}
 
@@ -60,14 +60,14 @@ function formatRow(msg) {
 
 function formatFileTable(res) {
 	// don't post anything for files that are good
-	if res.alex.messages.length == 0 {
+	if (res.result.messages.length == 0) {
 		return ''
 	}
 
 	let header = `### ${res.filePath}\n`
 	let tableHeader = `| Level | Location | Word | Recommendation |\n| :---: | :---: | :---: | :--- |\n`
 
-	let rows = res.alex.messages.map(msg => formatRow(msg))
+	let rows = res.result.messages.map(msg => formatRow(msg))
 
 	return `${header}${tableHeader}${rows.join('\n')}\n`
 }
@@ -79,11 +79,13 @@ function formatComment(checkRes) {
 	return `${header}${sections.join('\n')}`
 }
 
-function checkAlex(fileList, noBinary, profanitySureness) {
+async function checkAlex(fileList, noBinary, profanitySureness) {
 	const filteredFilesList = filesList.filter((value) => fs.existsSync(value));
 	const options = {noBinary: noBinary, profanitySureness: profanitySureness}
 
-	let checkRes = fileList.map(file => {filePath: file, alex: checkFile(file, options)})
+	let checkRes = Promise.all(filteredFilesList.map(file => {
+		return {filePath: file, result: checkFile(file, options)}
+	}))
 
 	return formatComment(checkRes)
 }
