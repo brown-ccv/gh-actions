@@ -19118,6 +19118,8 @@ async function run() {
     const prOnly = Boolean(core.getInput("pr_only"))
     const globPattern = core.getInput("glob_pattern")
 
+    console.warn(prOnly)
+
     if (!number) {
       core.setFailed("This action only works for pull_request");
       return;
