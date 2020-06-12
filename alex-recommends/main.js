@@ -1,13 +1,10 @@
 const core = require('@actions/core');
-const { context, GitHub } = require('@actions/github');
+const github = require('@actions/github');
 const { findPreviousComment, createComment, EXTENSIONS_TO_CHECK, checkAlex } = require("./utils");
-
-const gql = (s) => s.join('');
-
-
 
 async function run() {
   try {
+    const context = github.context
     const repo = context.repo;
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
@@ -18,10 +15,10 @@ async function run() {
       return;
     }
 
-    const octokit = new GitHub(githubToken);
+    const octokit = github.getOctokit(githubToken);
 
     const prInfo = await octokit.graphql(
-      gql`
+      `
         query($owner: String!, $name: String!, $prNumber: Int!) {
           repository(owner: $owner, name: $name) {
             pullRequest(number: $prNumber) {
