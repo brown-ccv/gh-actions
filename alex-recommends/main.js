@@ -12,7 +12,7 @@ async function run() {
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const messageId = core.getInput("message_id");
     const prOnly = core.getInput("pr_only")
-    const globPattern = core.getInput("glob_pattern")
+    const globPattern = ["!.git", core.getInput("glob_pattern")]
 
     if (!number) {
       core.setFailed("This action only works for pull_request");
@@ -21,7 +21,7 @@ async function run() {
 
     const octokit = github.getOctokit(githubToken);
 
-    const globber = await glob.create(globPattern)
+    const globber = await glob.create(globPattern.join('\n'))
     let files = await globber.glob()
     console.warn(files)
 
@@ -47,6 +47,7 @@ async function run() {
         }
       );
       let prFiles = prInfo.repository.pullRequest.files.nodes;
+      console.warn(prFiles)
       files = files.filter(x => prFiles.includes(x))
     }
 
