@@ -60,7 +60,7 @@ function formatRow(msg) {
 		status = `:stop_sign:`
 	}
 
-	return `| ${status} | ${line}:${column} | ${actual} | ${reason} |`
+	return `| ${status} | ${msg.line}:${msg.column} | ${msg.actual} | ${msg.reason} |`
 }
 
 function formatFileTable(res) {
@@ -81,9 +81,16 @@ function formatComment(checkRes) {
 	console.warn(checkRes)
 
 	let header = `# Alex Recommends Report\n Alex recommends the following language changes, but Alex is a regular expression based algorithm, so take them with a grain of salt.\n`
+	let success = `### :sparkles: :rocket: :sparkles: Nothing to Report :sparkles: :rocket: :sparkles:`
+
 	let sections = checkRes.map(res => formatFileTable(res))
 
-	return `${header}${sections.join('\n')}`
+	if (sections.every(section => section === '')) {
+		return `${header}${success}`
+	} else {
+		return `${header}${sections.join('\n')}`
+	}
+
 }
 
 function checkAlex(filesList, noBinary, profanitySureness) {
