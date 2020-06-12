@@ -17832,7 +17832,7 @@ isStream.transform = function (stream) {
 const core = __webpack_require__(470);
 const github = __webpack_require__(469);
 const path = __webpack_require__(622)
-const { findPreviousComment, createComment, EXTENSIONS_TO_CHECK, checkAlex, getExt } = __webpack_require__(278);
+const { findPreviousComment, createComment, updateComment, EXTENSIONS_TO_CHECK, checkAlex, getExt } = __webpack_require__(278);
 
 async function run() {
   try {
