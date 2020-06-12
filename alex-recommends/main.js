@@ -41,6 +41,8 @@ async function run() {
     console.warn(prInfo)
 
     const files = prInfo.repository.pullRequest.files.nodes;
+
+    console.warn(files)
     const filesToCheck = files
       .filter(f => Object.keys(EXTENSIONS_TO_CHECK).has(path.extname(f.path)))
       .map(f => f.path);
