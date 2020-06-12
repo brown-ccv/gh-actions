@@ -14,9 +14,6 @@ inputs:
   profanity_sureness:
     description: "Alex profanitySureness configuration option - 0=unlikely, 1=maybe, 2=likely"
     default: 1
-  pr_only:
-    description: "Only run alex on files changed during this PR"
-    default: true
 
 runs:
   using: "node12"

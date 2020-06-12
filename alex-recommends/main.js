@@ -6,56 +6,32 @@ const { findPreviousComment, createComment, updateComment, EXTENSIONS_TO_CHECK, 
 async function run() {
   try {
     const context = github.context
-    console.warn(context.payload.pull_request.head)
     const repo = context.repo;
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const messageId = core.getInput("message_id");
-    const prOnly = core.getInput("pr_only")
 
     if (!number) {
       core.setFailed("This action only works for pull_request");
       return;
     }
 
-    core.setFailed("force fail");
-    return
-
     const octokit = github.getOctokit(githubToken);
 
-    let query
-    if (prOnly) {
-      query = `
-        query prInfo($owner: String!, $name: String!, $prNumber: Int!) {
-          repository(owner: $owner, name: $name) {
-            pullRequest(number: $prNumber) {
-              files(first: 100) {
-                nodes {
-                  path
-                }
-              }
-            }
-          }
-        }
-      `
-    } else {
-      query = `
-        query prInfo($owner: String!, $name: String!, $prNumber: Int!) {
-          repository(owner: $owner, name: $name) {
-            pullRequest(number: $prNumber) {
-              files(first: 100) {
-                nodes {
-                  path
-                }
-              }
-            }
-          }
-        }
-      `
-    }
-
     const prInfo = await octokit.graphql(
-      query,
+      `
+        query prInfo($owner: String!, $name: String!, $prNumber: Int!) {
+          repository(owner: $owner, name: $name) {
+            pullRequest(number: $prNumber) {
+              files(first: 100) {
+                nodes {
+                  path
+                }
+              }
+            }
+          }
+        }
+      `,
       {
         owner: context.repo.owner,
         name: context.repo.repo,
@@ -63,11 +39,9 @@ async function run() {
       }
     );
 
-    console.warn(prInfo)
 
     const files = prInfo.repository.pullRequest.files.nodes;
 
-    console.warn(files)
     const filesToCheck = files
       .filter(f => {
         return EXTENSIONS_TO_CHECK.hasOwnProperty(getExt(f.path))
