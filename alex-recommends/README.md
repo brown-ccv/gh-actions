@@ -1,0 +1,48 @@
+# Alex Recommends
+
+Uses [alex](https://alexjs.com/) to check language and post a comment on the pull request with the recommendations.
+
+## Inputs
+
+### `GITHUB_TOKEN`
+
+**Required** `{{ secrets.GITHUB_TOKEN }}`
+
+
+### `message_id`
+
+**Optional** a string identifier to add as a comment on the message.  Only one message with a given `message_id` will be posted to a PR.  If you are using this action multiple times within a workflow, it is recommended to customize the `message_id`.  Default is `"Default"`.
+
+## Outputs
+
+None
+
+## Example `workflow.yml`
+
+This workflow runs when a PR is made to the `develop` branch.  It then adds the appropriate checklists, if checklists have not previously been added.
+
+```
+name: PR Commenter
+
+on:
+  pull_request:
+    branch:
+      - develop
+
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Comment on new PR
+      uses: brown-ccv/gh-actions/alex-recommends@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        message_id: 'alex'
+```
