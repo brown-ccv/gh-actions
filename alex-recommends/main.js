@@ -11,10 +11,8 @@ async function run() {
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const messageId = core.getInput("message_id");
-    const prOnly = core.getInput("pr_only")
+    const prOnly = Boolean(core.getInput("pr_only"))
     const globPattern = core.getInput("glob_pattern")
-
-    console.warn(globPattern)
 
     if (!number) {
       core.setFailed("This action only works for pull_request");
