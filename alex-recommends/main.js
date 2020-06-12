@@ -6,7 +6,7 @@ const { findPreviousComment, createComment, updateComment, EXTENSIONS_TO_CHECK, 
 async function run() {
   try {
     const context = github.context
-    console.warn(context)
+    console.warn(context.payload.pull_request.head)
     const repo = context.repo;
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
@@ -17,6 +17,9 @@ async function run() {
       core.setFailed("This action only works for pull_request");
       return;
     }
+
+    core.setFailed("force fail");
+    return
 
     const octokit = github.getOctokit(githubToken);
 
