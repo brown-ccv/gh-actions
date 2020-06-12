@@ -16,8 +16,16 @@ Uses [alex](https://alexjs.com/) to check language and post a comment on the pul
 
 ### `no_binary`
 **Optional** Alex noBinary configuration option - if false items like `he or she` will not be corrected to `they` [default: true]
+
 ### `profanity_sureness`
 **Optional** Alex profanitySureness configuration option - 0=unlikely, 1=maybe, 2=likely [default: 1]
+
+### `glob_pattern`
+**Optional** A glob pattern to filter files for [default: "\*"]
+
+
+### `pr_only`
+**Optional** Only evaluate files that were changed in this Pull Request [default: true]
 
 ## Outputs
 
@@ -49,4 +57,6 @@ jobs:
         message_id: 'alex'
         no_binary: false
         profanity_sureness: 2
+        pr_only: false
+        glob_pattern: "services/**"
 ```
