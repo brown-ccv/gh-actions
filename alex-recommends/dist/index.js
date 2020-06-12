@@ -14703,7 +14703,7 @@ const fs = __webpack_require__(226)
 const alex = __webpack_require__(64)
 const path = __webpack_require__(622)
 
-const EXTENSIONS_TO_CHECK = {md: 'md', txt: 'text', text: 'text', html: 'html', yaml: 'text', yml: 'text'}
+let EXTENSIONS_TO_CHECK = {md: 'md', txt: 'text', text: 'text', html: 'html', yaml: 'text', yml: 'text'}
 
 async function findPreviousComment(octokit, repo, issue_number, message_id) {
   const HEADER = `<!-- Alex Pull Request Comment - ${message_id} -->`; // Always a technical comment
@@ -17865,7 +17865,7 @@ async function run() {
       .map(f => f.path);
     if (filesToCheck.length < 1) {
       console.warn(
-        `No files with [${[...EXTENSIONS_TO_CHECK].join(
+        `No files with [${Objeck.keys(EXTENSIONS_TO_CHECK).join(
           ', '
         )}] extensions added or modified in this PR, nothing to lint...`
       );

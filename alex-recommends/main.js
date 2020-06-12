@@ -49,7 +49,7 @@ async function run() {
       .map(f => f.path);
     if (filesToCheck.length < 1) {
       console.warn(
-        `No files with [${[...EXTENSIONS_TO_CHECK].join(
+        `No files with [${Objeck.keys(EXTENSIONS_TO_CHECK).join(
           ', '
         )}] extensions added or modified in this PR, nothing to lint...`
       );

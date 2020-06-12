@@ -2,7 +2,7 @@ const fs = require("fs-extra")
 const alex = require("alex")
 const path = require("path")
 
-const EXTENSIONS_TO_CHECK = {md: 'md', txt: 'text', text: 'text', html: 'html', yaml: 'text', yml: 'text'}
+let EXTENSIONS_TO_CHECK = {md: 'md', txt: 'text', text: 'text', html: 'html', yaml: 'text', yml: 'text'}
 
 async function findPreviousComment(octokit, repo, issue_number, message_id) {
   const HEADER = `<!-- Alex Pull Request Comment - ${message_id} -->`; // Always a technical comment
