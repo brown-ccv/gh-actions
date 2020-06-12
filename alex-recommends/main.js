@@ -17,7 +17,7 @@ async function run() {
 
     const octokit = github.getOctokit(githubToken);
 
-    const { prInfo } = await octokit.graphql(
+    const prInfo = await octokit.graphql(
       `
         query prInfo($owner: String!, $name: String!, $prNumber: Int!) {
           repository(owner: $owner, name: $name) {
@@ -37,6 +37,8 @@ async function run() {
         prNumber: context.issue.number
       }
     );
+
+    console.warn(prInfo)
 
     const files = prInfo.repository.pullRequest.files.nodes;
     const filesToCheck = files
