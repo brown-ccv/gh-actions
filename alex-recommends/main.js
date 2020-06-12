@@ -46,8 +46,8 @@ async function run() {
     console.warn(files)
     const filesToCheck = files
       .filter(f => {
-        console.warn(path.extname(f.path))
-        return EXTENSIONS_TO_CHECK.hasOwnProperty(path.extname(f.path))
+        console.warn(getExt)
+        return EXTENSIONS_TO_CHECK.hasOwnProperty(getExt(f.path))
       })
       .map(f => f.path);
 

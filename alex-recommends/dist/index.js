@@ -14733,11 +14733,14 @@ async function updateComment(octokit, repo, issue_number, comment_number, messag
   });
 }
 
+function getExt(file) {
+	return path.extname(file).slice(1)
+}
 
 
 async function checkFile(file, options) {
 	console.warn(`checking ${file}`)
-	const extension = path.extname(file)
+	const extension = getExt(file)
 	const checkType = EXTENSIONS_TO_CHECK[extension]
 
 	const body = await fs.readFile(file, "utf-8");
@@ -14797,7 +14800,8 @@ module.exports = {
 	createComment,
 	updateComment,
 	EXTENSIONS_TO_CHECK,
-	checkAlex
+	checkAlex,
+	getExt
 }
 
 
@@ -17862,8 +17866,8 @@ async function run() {
     console.warn(files)
     const filesToCheck = files
       .filter(f => {
-        console.warn(path.extname(f.path))
-        return EXTENSIONS_TO_CHECK.hasOwnProperty(path.extname(f.path))
+        console.warn(getExt)
+        return EXTENSIONS_TO_CHECK.hasOwnProperty(getExt(f.path))
       })
       .map(f => f.path);
 

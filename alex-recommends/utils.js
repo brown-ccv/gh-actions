@@ -32,11 +32,14 @@ async function updateComment(octokit, repo, issue_number, comment_number, messag
   });
 }
 
+function getExt(file) {
+	return path.extname(file).slice(1)
+}
 
 
 async function checkFile(file, options) {
 	console.warn(`checking ${file}`)
-	const extension = path.extname(file)
+	const extension = getExt(file)
 	const checkType = EXTENSIONS_TO_CHECK[extension]
 
 	const body = await fs.readFile(file, "utf-8");
@@ -96,5 +99,6 @@ module.exports = {
 	createComment,
 	updateComment,
 	EXTENSIONS_TO_CHECK,
-	checkAlex
+	checkAlex,
+	getExt
 }
