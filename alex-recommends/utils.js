@@ -89,7 +89,7 @@ async function checkAlex(filesList, noBinary, profanitySureness) {
 	const filteredFilesList = filesList.filter((value) => fs.existsSync(value));
 	const options = {noBinary: noBinary, profanitySureness: profanitySureness}
 
-	let checkRes = Promise.all(filteredFilesList.map(file => {
+	let checkRes = await Promise.all(filteredFilesList.map(file => {
 		return {filePath: file, result: checkFile(file, options)}
 	}))
 
