@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const path = require("path")
-const { findPreviousComment, createComment, EXTENSIONS_TO_CHECK, checkAlex } = require("./utils");
+const { findPreviousComment, createComment, EXTENSIONS_TO_CHECK, checkAlex, getExt } = require("./utils");
 
 async function run() {
   try {
