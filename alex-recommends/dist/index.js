@@ -19118,8 +19118,6 @@ async function run() {
     const prOnly = JSON.parse(core.getInput("pr_only").toLowerCase())
     const globPattern = core.getInput("glob_pattern")
 
-    console.warn(prOnly)
-
     if (!number) {
       core.setFailed("This action only works for pull_request");
       return;
@@ -19129,7 +19127,6 @@ async function run() {
 
     const globber = await glob.create(globPattern)
     let files = await globber.glob()
-    console.warn(files)
 
     if (prOnly) {
       const prInfo = await octokit.graphql(
@@ -19153,14 +19150,9 @@ async function run() {
         }
       );
       let prFiles = prInfo.repository.pullRequest.files.nodes.map(f => path.resolve(f.path));
-      console.warn(prFiles)
       files = files.filter(x => prFiles.includes(x))
     }
 
-    console.warn(files)
-
-    core.setFailed("Force fail");
-    return;
 
     const filesToCheck = files
       .filter(f => {
@@ -19180,6 +19172,10 @@ async function run() {
   } catch ({ message }) {
     core.setFailed(message);
   }
+
+  core.setFailed("Force fail");
+  return;
+
 }
 
 run();
