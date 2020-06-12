@@ -37,12 +37,12 @@ function getExt(file) {
 }
 
 
-async function checkFile(file, options) {
+function checkFile(file, options) {
 	console.warn(`checking ${file}`)
 	const extension = getExt(file)
 	const checkType = EXTENSIONS_TO_CHECK[extension]
 
-	const body = await fs.readFile(file, "utf-8");
+	const body = fs.readFileSync(file, "utf-8");
 
 	if (checkType === 'text') {
 		return alex.text(body, options)
@@ -85,16 +85,14 @@ function formatComment(checkRes) {
 	return `${header}${sections.join('\n')}`
 }
 
-async function checkAlex(filesList, noBinary, profanitySureness) {
+function checkAlex(filesList, noBinary, profanitySureness) {
 	const filteredFilesList = filesList.filter((value) => fs.existsSync(value));
 	const options = {noBinary: noBinary, profanitySureness: profanitySureness}
 
-	let promises = filteredFilesList.map(async file => {
-		const resp = await checkFile(file, options)
+	let checkRes = filteredFilesList.map(file => {
+		const resp = checkFile(file, options)
 		return {filePath: file, result: resp}
 	})
-
-	let checkRes = await Promise.all(promises)
 
 	return formatComment(checkRes)
 }
