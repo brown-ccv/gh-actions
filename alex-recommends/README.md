@@ -13,6 +13,12 @@ Uses [alex](https://alexjs.com/) to check language and post a comment on the pul
 
 **Optional** a string identifier to add as a comment on the message.  Only one message with a given `message_id` will be posted to a PR.  If you are using this action multiple times within a workflow, it is recommended to customize the `message_id`.  Default is `"Default"`.
 
+
+### `no_binary`
+**Optional** Alex noBinary configuration option - if false items like `he or she` will not be corrected to `they` [default: true]
+### `profanity_sureness`
+**Optional** Alex profanitySureness configuration option - 0=unlikely, 1=maybe, 2=likely [default: 1]
+
 ## Outputs
 
 None
@@ -22,16 +28,12 @@ None
 This workflow runs when a PR is made to the `develop` branch.  It then adds the appropriate checklists, if checklists have not previously been added.
 
 ```
-name: PR Commenter
+name: Alex Recommends
 
-on:
-  pull_request:
-    branch:
-      - develop
-
+on: pull_request
 
 jobs:
-  comment:
+  alex:
     runs-on: ubuntu-latest
 
     steps:
@@ -45,4 +47,6 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         message_id: 'alex'
+        no_binary: false
+        profanity_sureness: 2
 ```
