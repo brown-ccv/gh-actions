@@ -33,7 +33,7 @@ None
 
 ## Example `workflow.yml`
 
-This workflow runs when a PR is made to the `develop` branch.  It then adds the appropriate checklists, if checklists have not previously been added.
+This workflow runs when a PR is made.  It then comments with the results of `alex` or updates a past comment, if available (based on `message_id`).
 
 ```
 name: Alex Recommends
