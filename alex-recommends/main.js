@@ -6,10 +6,12 @@ const { findPreviousComment, createComment, updateComment, EXTENSIONS_TO_CHECK, 
 async function run() {
   try {
     const context = github.context
+    console.warn(context)
     const repo = context.repo;
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const messageId = core.getInput("message_id");
+    const prOnly = core.getInput("pr_only")
 
     if (!number) {
       core.setFailed("This action only works for pull_request");
@@ -18,8 +20,9 @@ async function run() {
 
     const octokit = github.getOctokit(githubToken);
 
-    const prInfo = await octokit.graphql(
-      `
+    let query
+    if (prOnly) {
+      query = `
         query prInfo($owner: String!, $name: String!, $prNumber: Int!) {
           repository(owner: $owner, name: $name) {
             pullRequest(number: $prNumber) {
@@ -31,7 +34,25 @@ async function run() {
             }
           }
         }
-      `,
+      `
+    } else {
+      query = `
+        query prInfo($owner: String!, $name: String!, $prNumber: Int!) {
+          repository(owner: $owner, name: $name) {
+            pullRequest(number: $prNumber) {
+              files(first: 100) {
+                nodes {
+                  path
+                }
+              }
+            }
+          }
+        }
+      `
+    }
+
+    const prInfo = await octokit.graphql(
+      query,
       {
         owner: context.repo.owner,
         name: context.repo.repo,
@@ -46,12 +67,10 @@ async function run() {
     console.warn(files)
     const filesToCheck = files
       .filter(f => {
-        console.warn(getExt)
         return EXTENSIONS_TO_CHECK.hasOwnProperty(getExt(f.path))
       })
       .map(f => f.path);
 
-    console.warn(filesToCheck)
     if (filesToCheck.length < 1) {
       console.warn(
         `No files with [${Object.keys(EXTENSIONS_TO_CHECK).join(
@@ -67,11 +86,8 @@ async function run() {
     const profanitySureness = core.getInput('profanity_sureness')
     const checkComment = checkAlex(filesToCheck, noBinary, profanitySureness)
 
-    console.warn(checkComment)
-
     const previous = await findPreviousComment(octokit, repo, number, messageId);
     if (previous) {
-      console.warn(previous)
       await updateComment(octokit, repo, previous.id, messageId, checkComment)
     } else {
       await createComment(octokit, repo, number, messageId, checkComment);
