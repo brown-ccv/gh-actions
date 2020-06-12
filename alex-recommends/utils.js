@@ -83,7 +83,7 @@ function formatComment(checkRes) {
 	return `${header}${sections.join('\n')}`
 }
 
-async function checkAlex(fileList, noBinary, profanitySureness) {
+async function checkAlex(filesList, noBinary, profanitySureness) {
 	const filteredFilesList = filesList.filter((value) => fs.existsSync(value));
 	const options = {noBinary: noBinary, profanitySureness: profanitySureness}
 
