@@ -19116,7 +19116,7 @@ async function run() {
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const messageId = core.getInput("message_id");
     const prOnly = core.getInput("pr_only")
-    const globPattern = ["!.git", core.getInput("glob_pattern")]
+    const globPattern = core.getInput("glob_pattern")
 
     if (!number) {
       core.setFailed("This action only works for pull_request");
@@ -19150,7 +19150,7 @@ async function run() {
           prNumber: context.issue.number
         }
       );
-      let prFiles = prInfo.repository.pullRequest.files.nodes;
+      let prFiles = prInfo.repository.pullRequest.files.nodes.map(f => f.path);
       console.warn(prFiles)
       files = files.filter(x => prFiles.includes(x))
     }
@@ -19164,10 +19164,6 @@ async function run() {
       .filter(f => {
         return EXTENSIONS_TO_CHECK.hasOwnProperty(getExt(f.path))
       })
-      .filter(f => {
-
-      })
-      .map(f => f.path);
 
     const noBinary = core.getInput('no_binary')
     const profanitySureness = core.getInput('profanity_sureness')
