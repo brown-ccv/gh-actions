@@ -19152,7 +19152,7 @@ async function run() {
           prNumber: context.issue.number
         }
       );
-      let prFiles = prInfo.repository.pullRequest.files.nodes.map(f => f.path);
+      let prFiles = prInfo.repository.pullRequest.files.nodes.map(f => path.resolve(f.path));
       console.warn(prFiles)
       files = files.filter(x => prFiles.includes(x))
     }
