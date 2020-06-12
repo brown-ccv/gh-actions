@@ -67,7 +67,8 @@ function formatFileTable(res) {
 		return ''
 	}
 
-	let header = `### ${res.filePath}\n`
+	let filePath = path.relative(process.cwd(), res.filePath)
+	let header = `### ${filePath}\n`
 	let tableHeader = `| Level | Location | Word | Recommendation |\n| :---: | :---: | :---: | :--- |\n`
 
 	let rows = res.result.messages.map(msg => formatRow(msg))
