@@ -54,6 +54,7 @@ function checkFile(file, options) {
 }
 
 function formatRow(msg) {
+	console.warn(msg)
 	let status = `:warning:`
 	if (msg.fatal) {
 		status = `:stop_sign:`
