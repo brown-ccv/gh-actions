@@ -14,6 +14,12 @@ inputs:
   profanity_sureness:
     description: "Alex profanitySureness configuration option - 0=unlikely, 1=maybe, 2=likely"
     default: 1
+  glob_pattern:
+    description: "Glob pattern used for filtering files"
+    default: "*"
+  pr_only:
+    description: "Whether to only run alex on files changed in this PR"
+    default: true
 
 runs:
   using: "node12"

@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const glob = require('@actions/glob')
 const path = require("path")
 const { findPreviousComment, createComment, updateComment, EXTENSIONS_TO_CHECK, checkAlex, getExt } = require("./utils");
 
@@ -10,6 +11,8 @@ async function run() {
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const messageId = core.getInput("message_id");
+    const prOnly = core.getInput("pr_only")
+    const globPattern = core.getInput("glob_pattern")
 
     if (!number) {
       core.setFailed("This action only works for pull_request");
@@ -18,46 +21,48 @@ async function run() {
 
     const octokit = github.getOctokit(githubToken);
 
-    const prInfo = await octokit.graphql(
-      `
-        query prInfo($owner: String!, $name: String!, $prNumber: Int!) {
-          repository(owner: $owner, name: $name) {
-            pullRequest(number: $prNumber) {
-              files(first: 100) {
-                nodes {
-                  path
+    const globber = await glob.create(globPattern)
+    const files = await globber.glob()
+    console.warn(files)
+
+    if (prOnly) {
+      const prInfo = await octokit.graphql(
+        `
+          query prInfo($owner: String!, $name: String!, $prNumber: Int!) {
+            repository(owner: $owner, name: $name) {
+              pullRequest(number: $prNumber) {
+                files(first: 100) {
+                  nodes {
+                    path
+                  }
                 }
               }
             }
           }
+        `,
+        {
+          owner: context.repo.owner,
+          name: context.repo.repo,
+          prNumber: context.issue.number
         }
-      `,
-      {
-        owner: context.repo.owner,
-        name: context.repo.repo,
-        prNumber: context.issue.number
-      }
-    );
+      );
+      let prFiles = prInfo.repository.pullRequest.files.nodes;
+      files = files.filter(x => prFiles.includes(x))
+    }
 
+    console.warn(files)
 
-    const files = prInfo.repository.pullRequest.files.nodes;
+    core.setFailed("Force fail");
+    return;
 
     const filesToCheck = files
       .filter(f => {
         return EXTENSIONS_TO_CHECK.hasOwnProperty(getExt(f.path))
       })
-      .map(f => f.path);
+      .filter(f => {
 
-    if (filesToCheck.length < 1) {
-      console.warn(
-        `No files with [${Object.keys(EXTENSIONS_TO_CHECK).join(
-          ', '
-        )}] extensions added or modified in this PR, nothing to lint...`
-      );
-      return;
-    } else {
-      console.warn(`found ${filesToCheck.length} files to check`)
-    }
+      })
+      .map(f => f.path);
 
     const noBinary = core.getInput('no_binary')
     const profanitySureness = core.getInput('profanity_sureness')

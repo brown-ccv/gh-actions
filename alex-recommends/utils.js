@@ -81,7 +81,7 @@ function formatComment(checkRes) {
 
 	let sections = checkRes.map(res => formatFileTable(res))
 
-	if (sections.every(section => section === '')) {
+	if (sections.every(section => section === '') || sections.length == 0) {
 		return `${header}${success}`
 	} else {
 		return `${header}${sections.join('\n')}`
