@@ -15875,7 +15875,7 @@ function formatFileTable(res) {
 }
 
 function formatComment(checkRes) {
-	let header = `# Alex Recommends Report\n Alex recommends the following language changes for files changed in this PR, but Alex is a regular expression based algorithm, so take them with a grain of salt.\n`
+	let header = `# Alex Recommends Report\n Alex recommends the following language changes, but Alex is a regular expression based algorithm, so take them with a grain of salt.\n`
 	let success = `### :sparkles: :rocket: :sparkles: Nothing to Report :sparkles: :rocket: :sparkles:`
 
 	let sections = checkRes.map(res => formatFileTable(res))
@@ -19173,10 +19173,6 @@ async function run() {
   } catch ({ message }) {
     core.setFailed(message);
   }
-
-  core.setFailed("Force fail");
-  return;
-
 }
 
 run();

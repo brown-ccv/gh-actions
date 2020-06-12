@@ -68,10 +68,6 @@ async function run() {
   } catch ({ message }) {
     core.setFailed(message);
   }
-
-  core.setFailed("Force fail");
-  return;
-
 }
 
 run();
