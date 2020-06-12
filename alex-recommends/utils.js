@@ -77,6 +77,8 @@ function formatFileTable(res) {
 }
 
 function formatComment(checkRes) {
+	console.warn(checkRes)
+
 	let header = `# Alex Recommends Report\n Alex recommends the following language changes, but Alex is a regular expression based algorithm, so take them with a grain of salt.\n`
 	let sections = checkRes.map(res => formatFileTable(res))
 
