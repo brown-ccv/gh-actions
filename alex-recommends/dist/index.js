@@ -19115,7 +19115,7 @@ async function run() {
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const messageId = core.getInput("message_id");
-    const prOnly = Boolean(core.getInput("pr_only"))
+    const prOnly = JSON.parse(core.getInput("pr_only").toLowerCase())
     const globPattern = core.getInput("glob_pattern")
 
     console.warn(prOnly)
