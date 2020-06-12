@@ -52,7 +52,7 @@ async function run() {
 
     const filesToCheck = files
       .filter(f => {
-        return EXTENSIONS_TO_CHECK.hasOwnProperty(getExt(f.path))
+        return EXTENSIONS_TO_CHECK.hasOwnProperty(getExt(f))
       })
 
     const noBinary = core.getInput('no_binary')
