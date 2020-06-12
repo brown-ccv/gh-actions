@@ -35,6 +35,7 @@ async function updateComment(octokit, repo, issue_number, comment_number, messag
 
 
 async function checkFile(file, options) {
+	console.warn(`checking ${file}`)
 	const extension = path.extname(file)
 	const checkType = EXTENSIONS_TO_CHECK[extension]
 

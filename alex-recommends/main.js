@@ -52,6 +52,8 @@ async function run() {
         )}] extensions added or modified in this PR, nothing to lint...`
       );
       return;
+    } else {
+      console.warn(`found ${filesToCheck.length} files to check`)
     }
 
     const noBinary = core.getInput('no_binary')

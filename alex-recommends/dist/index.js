@@ -16202,6 +16202,7 @@ async function updateComment(octokit, repo, issue_number, comment_number, messag
 
 
 async function checkFile(file, options) {
+	console.warn(`checking ${file}`)
 	const extension = path.extname(file)
 	const checkType = EXTENSIONS_TO_CHECK[extension]
 
@@ -19347,6 +19348,8 @@ async function run() {
         )}] extensions added or modified in this PR, nothing to lint...`
       );
       return;
+    } else {
+      console.warn(`found ${filesToCheck.length} files to check`)
     }
 
     const noBinary = core.getInput('no_binary')
