@@ -17866,9 +17866,11 @@ async function run() {
         return EXTENSIONS_TO_CHECK.hasOwnProperty(path.extname(f.path))
       })
       .map(f => f.path);
+
+    console.warn(filesToCheck)
     if (filesToCheck.length < 1) {
       console.warn(
-        `No files with [${Objeck.keys(EXTENSIONS_TO_CHECK).join(
+        `No files with [${Object.keys(EXTENSIONS_TO_CHECK).join(
           ', '
         )}] extensions added or modified in this PR, nothing to lint...`
       );
