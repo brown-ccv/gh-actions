@@ -14723,11 +14723,11 @@ async function createComment(octokit, repo, issue_number, message_id, comment) {
   });
 }
 
-async function updateComment(octokit, repo, comment_number, message_id, comment) {
+async function updateComment(octokit, repo, comment_id, message_id, comment) {
   const HEADER = `<!-- Alex Pull Request Comment - ${message_id} -->`;
   await octokit.issues.updateComment({
     ...repo,
-		comment_number,
+		comment_id,
     body: `${HEADER}\n${comment}`
   });
 }
