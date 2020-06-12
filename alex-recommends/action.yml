@@ -16,7 +16,7 @@ inputs:
     default: 1
   glob_pattern:
     description: "Glob pattern used for filtering files"
-    default: "*.*"
+    default: "**/*.*"
   pr_only:
     description: "Whether to only run alex on files changed in this PR"
     default: true
