@@ -15,7 +15,8 @@ function getYMLFileContent(issue) {
 
 
 function removeJunkAndValidateYML(contents){
-  // if(contents.about.deployment === "https://example.com"){ contents.about['deployment'] = null };
+  console.log(contents)
+  if(contents.about.deployment === "https://example.com"){ contents.about.deployment = null };
   if(contents.about.publication === "https://example.com"){ contents.about.publication = null  };
   if(contents.about.sourceCode.link === 'https://github.com/example/task' ){ contents.about.sourceCode.link = null };
   contents.framework = (contents.framework!=null)?contents.framework.filter(function(v) {return v.name.startsWith("FRAMEWORK")===false}):null;
@@ -34,7 +35,7 @@ function removeJunkAndValidateYML(contents){
     ){
       return null;
     }
-
+    console.log(contents)
     return contents;
 }
 
