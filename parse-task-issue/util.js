@@ -1,6 +1,6 @@
 const jsyaml = require('js-yaml');
 const fs = require('fs');
-
+const _ = require('lodash');
 
 function getYMLFileContent(issue) {
   let start = issue.body.indexOf("taskName")
@@ -15,18 +15,22 @@ function getYMLFileContent(issue) {
 
 
 function removeJunkAndValidateYML(contents){
-  if(contents.links.deployment === "https://example.com"){ contents.links.deployment = null };
-  if(contents.links.publication === "https://example.com"){ contents.links.publication = null };
-  contents.framework.library = (contents.framework.library!=null)?contents.framework.library.filter(function(v) {return v.startsWith("LIBRARY")===false}):null;
-  contents.framework.language = (contents.framework.language!=null)?contents.framework.language.filter(function(v) {return v.startsWith("LANGUAGE")===false}):null;
+  if(contents.about.deployment === "https://example.com"){ contents.links.deployment = null };
+  if(contents.about.publication === "https://example.com"){ contents.links.publication = null };
+  if(contents.about.sourceCode.link === 'https://github.com/example/task' ){ contents.links.sourceCode.link = null };
+  contents.framework = (contents.framework!=null)?contents.framework.filter(function(v) {return v.name.startsWith("FRAMEWORK")===false}):null;
+  contents.language = (contents.language!=null)?contents.language.filter(function(v) {return v.startsWith("LANGUAGE")===false}):null;
   contents.lab.developers = (contents.lab.developers!=null)?contents.lab.developers.filter(function(v) {return v.startsWith("DEVELOPER")===false}):null;
   contents.tags = (contents.tags!=null)?contents.tags.filter(function(v) {return v.startsWith("TAG")===false}):null;
   if(contents.taskName === null || 
     contents.taskName === 'Example Task' ||
-    contents.links.sourceCode === null ||
-    contents.links.sourceCode === 'https://github.com/example/task' ||
-    contents.lab.name === null ||
-    contents.lab.institution === null  
+    contents.about.description === null ||
+    contents.about.description === 'A short description of the task' ||
+    contents.about.sourceCode.access === null ||
+    contents.about.sourceCode.access === 'private/public' ||
+    _.some(contents.framework, ['link',null]) ||
+    _.some(contents.lab, ['name',null]) ||
+    _.some(contents.lab, ['institution',null])  
     ){
       return null;
     }
