@@ -1,0 +1,12 @@
+name: 'Check Website'
+description: 'Are you running?'
+inputs:
+  website:  # id of input
+    description: 'website url'
+    required: true
+  github_token:
+    description: 'secrets.GITHUB_TOKEN'
+    required: true
+runs:
+  using: 'node12'
+  main: "dist/index.js"
