@@ -33,9 +33,8 @@ jobs:
     strategy:
       matrix:
         website:
-          - https://publications.ccv.brown.edu
-          - https://publications-api.ccv.brown.edu/publications
-          - https://keycloak.ccv.brown.edu
+          - https://google.com
+          - https://github.com
 
     steps:
       - name: Check if website is up
