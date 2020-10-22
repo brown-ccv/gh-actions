@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Check if website is up
-        uses: brown-ccv/gh-actions/check-website-up
+        uses: brown-ccv/gh-actions/check-website-up@main
         with:
           website: ${{ matrix.website }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
