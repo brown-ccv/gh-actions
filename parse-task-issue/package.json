@@ -16,7 +16,7 @@
   "author": "Rashi1997",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.3",
+    "@actions/core": "^1.2.6",
     "@actions/github": "^2.1.1",
     "cz-conventional-changelog": "^3.2.0",
     "git-cz": "^4.7.0",
