@@ -51,7 +51,8 @@ async function openOrUpdateIssue(website, err, octokit, repo) {
     await octokit.issues.create({
       ...repo,
       title,
-      body: err
+      body: err,
+      assignee: "tdivoll"
     })
     console.log(`Opened issue`)
   }
