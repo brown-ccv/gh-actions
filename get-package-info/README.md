@@ -18,7 +18,6 @@ The name of the package from the `name` field.
 
 The version of the package from the `version` field.
 
-
 ## Example `workflow.yml`
 
 This workflow tests, build, and packages electron apps.  It uses the `package_name` and `package_version` to upload the correct artifacts to the GitHub action run.
@@ -62,7 +61,7 @@ jobs:
       run: npm test
       env:
         CI: true
-        
+
     - name: package electron - windows
       if: startsWith(matrix.os, 'windows')
       run: npm run package:windows
