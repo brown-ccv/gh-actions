@@ -11,5 +11,5 @@ outputs:
   package_version:
     description: version field of the package.json file
 runs:
-  using: 'node12'
+  using: 'node20'
   main: 'main.js'
