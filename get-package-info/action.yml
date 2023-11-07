@@ -1,14 +1,15 @@
 name: 'Get Package Info'
+description: "Gets the name and version of the repository's package.json file"
 inputs:
   path:
-    description: location of package.json file
+    description: Location of package.json file
     required: true
     default: package.json
 outputs:
-  package_version:
-    description: main package version
   package_name:
-    description: main package name
+    description: name field of the package.json file
+  package_version:
+    description: version field of the package.json file
 runs:
-  using: 'node12'
-  main: 'main.js'
+  using: 'node20'
+  main: 'index.js'
