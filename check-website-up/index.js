@@ -7,7 +7,6 @@ async function run() {
     const repo = github.context.repo;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const website = core.getInput("website", {required: true});
-    const notifySlack = core.getInput("notify_slack") === 'true';
     const slackWebhook = notifySlack
       ? core.getInput("slack_webhook_url", { required: true })
       : null;
@@ -18,7 +17,7 @@ async function run() {
       const res = await axios.get(website);
       if (res.status >= 400) {
         console.log("Bad status returned from website");
-        if (notifySlack) {
+        if (slackWebhook) {
           await notifySlackChannel(website, res.statusText, slackWebhook)
         }
         await openOrUpdateIssue(website, res.statusText, octokit, repo);
