@@ -7,6 +7,10 @@ async function run() {
     const repo = github.context.repo;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const website = core.getInput("website", {required: true});
+    const notifySlack = core.getInput("notify_slack") === 'true';
+    const slackWebhook = notifySlack
+      ? core.getInput("slack_webhook_url", { required: true })
+      : null;
 
     const octokit = github.getOctokit(githubToken);
 
@@ -14,6 +18,9 @@ async function run() {
       const res = await axios.get(website);
       if (res.status >= 400) {
         console.log("Bad status returned from website");
+        if (notifySlack) {
+          await notifySlackChannel(website, res.statusText, slackWebhook)
+        }
         await openOrUpdateIssue(website, res.statusText, octokit, repo);
       } else {
         console.log("Succesfully contacted website");
@@ -26,6 +33,16 @@ async function run() {
 
   } catch (error) {
     core.setFailed(error.message);
+  }
+}
+
+async function notifySlackChannel(website, err, webhook) {
+  let text = `${website} is down. Status: ${err}`
+  try {
+    await axios.post(webhook, { text });
+    console.log("Sent Slack alert.");
+  } catch (err) {
+    console.error("Failed to send Slack alert:", err.message);
   }
 }
 
