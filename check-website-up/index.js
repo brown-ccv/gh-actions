@@ -8,7 +8,7 @@ async function run() {
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const website = core.getInput("website", {required: true});
     const slackWebhook = notifySlack
-      ? core.getInput("slack_webhook_url", { required: true })
+      ? core.getInput("slack_webhook_url", { required: false })
       : null;
 
     const octokit = github.getOctokit(githubToken);
