@@ -36,24 +36,32 @@ async function run() {
 }
 
 async function notifySlackChannel(website, err, webhook) {
-  let text = `${website} is down. Status: ${err}`
-  try {
-    await axios.post(webhook, { text });
-    console.log("Sent Slack alert.");
-  } catch (err) {
-    console.error("Failed to send Slack alert:", err.message);
+  const open_issue = await checkForOpenIssue(website, repo)
+  if (!open_issue) {
+    let text = `${website} is down. Status: ${err}`
+    try {
+      await axios.post(webhook, { text });
+      console.log("Sent Slack alert.");
+    } catch (err) {
+      console.error("Failed to send Slack alert:", err.message);
+    }
   }
 }
 
-async function openOrUpdateIssue(website, err, octokit, repo) {
+async function checkForOpenIssue(website, repo) {
   const { data: issues } = await octokit.issues.listForRepo({
     ...repo,
     state: 'open'
   });
 
   const title = `${website} Down`;
-
   const open_issue = issues.find(issue => issue.title.startsWith(title));
+  
+  return open_issue
+}
+
+async function openOrUpdateIssue(website, err, octokit, repo) {
+  const open_issue = await checkForOpenIssue(website, repo)
 
   if (open_issue) {
     const issue_number = open_issue.number;
@@ -75,14 +83,7 @@ async function openOrUpdateIssue(website, err, octokit, repo) {
 }
 
 async function closeIssueIfOpen(website, octokit, repo) {
-  const { data: issues } = await octokit.issues.listForRepo({
-    ...repo,
-    state: 'open'
-  });
-
-  const title = `${website} Down`;
-
-  const open_issue = issues.find(issue => issue.title.startsWith(title));
+  const open_issue = await checkForOpenIssue(website, repo)
 
   if (open_issue) {
     const issue_number = open_issue.number;
