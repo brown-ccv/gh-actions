@@ -45,7 +45,7 @@ jobs:
 ```
 
 
-If your Slack Channel has registered an incoming webhook, you can optioanlly pass that along to the this action in order to receive a Slack alert in your team's channel. Your incoming webhook must be registered as a secret in your GitHub repo. 
+If your Slack Channel has registered an incoming webhook, you can optionally pass that along to the this action in order to receive a Slack alert in your team's channel. Your incoming webhook must be registered as a secret in your GitHub repo. 
 
 Note:  If your site runs behind Brown's firewall, you will need to deploy the action on a self-hosted runner. 
 
