@@ -7,6 +7,9 @@ async function run() {
     const repo = github.context.repo;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const website = core.getInput("website", {required: true});
+    const slackWebhook = notifySlack
+      ? core.getInput("slack_webhook_url", { required: false })
+      : null;
 
     const octokit = github.getOctokit(githubToken);
 
@@ -14,6 +17,9 @@ async function run() {
       const res = await axios.get(website);
       if (res.status >= 400) {
         console.log("Bad status returned from website");
+        if (slackWebhook) {
+          await notifySlackChannel(website, res.statusText, slackWebhook)
+        }
         await openOrUpdateIssue(website, res.statusText, octokit, repo);
       } else {
         console.log("Succesfully contacted website");
@@ -29,15 +35,33 @@ async function run() {
   }
 }
 
-async function openOrUpdateIssue(website, err, octokit, repo) {
+async function notifySlackChannel(website, err, webhook) {
+  const open_issue = await checkForOpenIssue(website, repo)
+  if (!open_issue) {
+    let text = `${website} is down. Status: ${err}`
+    try {
+      await axios.post(webhook, { text });
+      console.log("Sent Slack alert.");
+    } catch (err) {
+      console.error("Failed to send Slack alert:", err.message);
+    }
+  }
+}
+
+async function checkForOpenIssue(website, repo) {
   const { data: issues } = await octokit.issues.listForRepo({
     ...repo,
     state: 'open'
   });
 
   const title = `${website} Down`;
-
   const open_issue = issues.find(issue => issue.title.startsWith(title));
+  
+  return open_issue
+}
+
+async function openOrUpdateIssue(website, err, octokit, repo) {
+  const open_issue = await checkForOpenIssue(website, repo)
 
   if (open_issue) {
     const issue_number = open_issue.number;
@@ -59,14 +83,7 @@ async function openOrUpdateIssue(website, err, octokit, repo) {
 }
 
 async function closeIssueIfOpen(website, octokit, repo) {
-  const { data: issues } = await octokit.issues.listForRepo({
-    ...repo,
-    state: 'open'
-  });
-
-  const title = `${website} Down`;
-
-  const open_issue = issues.find(issue => issue.title.startsWith(title));
+  const open_issue = await checkForOpenIssue(website, repo)
 
   if (open_issue) {
     const issue_number = open_issue.number;

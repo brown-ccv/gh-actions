@@ -1,12 +1,19 @@
 name: 'Check Website'
-description: 'Are you running?'
+description: 'Checks if a website is reachable. Opens/closes GitHub issues and optionally notifies Slack.'
+
 inputs:
-  website:  # id of input
-    description: 'website url'
+  website:
+    description: 'The website URL to check'
     required: true
+
   github_token:
     description: 'secrets.GITHUB_TOKEN'
     required: true
+
+  slack_webhook_url:
+    description: 'Slack incoming webhook URL'
+    required: false
+
 runs:
   using: 'node12'
   main: "dist/index.js"
