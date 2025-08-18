@@ -14,6 +14,11 @@ inputs:
     description: 'Slack incoming webhook URL'
     required: false
 
+  assignees:
+    description: 'Comma-separated list of GitHub usernames to assign to the issue'
+    required: false
+    default: ''
+
 runs:
   using: 'node20'
   main: "dist/index.js"
