@@ -19,12 +19,15 @@ async function run() {
         }
         await openOrUpdateIssue(website, res.statusText, octokit, repo);
       } else {
-        console.log("Succesfully contacted website");
+        console.log("Successfully contacted website");
         await closeIssueIfOpen(website, octokit, repo);
       }
     } catch (err) {
       console.log("Error with get request");
-      await notifySlackChannel(website, err.message, slackWebhook, repo)
+      if (slackWebhook) {
+        console.log(`Notifying Slack channel with webhook ${slackWebhook}`);
+        await notifySlackChannel(website, err.message, slackWebhook, repo)
+      }
       await openOrUpdateIssue(website, err.message, octokit, repo);
     }
 
@@ -78,7 +81,7 @@ async function openOrUpdateIssue(website, err, octokit, repo) {
       ...repo,
       title,
       body: err,
-      assignee: "tdivoll"
+      assignees: ["tdivoll", "fordmcdonald"]
     })
     console.log(`Opened issue`)
   }
