@@ -7,18 +7,15 @@ async function run() {
     const repo = github.context.repo;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
     const website = core.getInput("website", {required: true});
-    const slackWebhook = notifySlack
-      ? core.getInput("slack_webhook_url", { required: false })
-      : null;
-
+    const slackWebhook = core.getInput("slack_webhook_url", { required: false }) || null;
     const octokit = github.getOctokit(githubToken);
 
     try {
-      const res = await axios.get(website);
+      const res = await axios.get(website, { validateStatus: () => true });
       if (res.status >= 400) {
         console.log("Bad status returned from website");
         if (slackWebhook) {
-          await notifySlackChannel(website, res.statusText, slackWebhook)
+          await notifySlackChannel(website, res.statusText, slackWebhook, repo)
         }
         await openOrUpdateIssue(website, res.statusText, octokit, repo);
       } else {
@@ -27,6 +24,7 @@ async function run() {
       }
     } catch (err) {
       console.log("Error with get request");
+      await notifySlackChannel(website, err.message, slackWebhook, repo)
       await openOrUpdateIssue(website, err.message, octokit, repo);
     }
 
@@ -35,7 +33,7 @@ async function run() {
   }
 }
 
-async function notifySlackChannel(website, err, webhook) {
+async function notifySlackChannel(website, err, webhook, repo) {
   const open_issue = await checkForOpenIssue(website, repo)
   if (!open_issue) {
     let text = `${website} is down. Status: ${err}`
@@ -49,6 +47,9 @@ async function notifySlackChannel(website, err, webhook) {
 }
 
 async function checkForOpenIssue(website, repo) {
+  const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
+  const octokit = github.getOctokit(githubToken);
+
   const { data: issues } = await octokit.issues.listForRepo({
     ...repo,
     state: 'open'
@@ -72,6 +73,7 @@ async function openOrUpdateIssue(website, err, octokit, repo) {
     })
     console.log(`Updated issue ${issue_number}`)
   } else {
+    const title = `${website} Down`;
     await octokit.issues.create({
       ...repo,
       title,
