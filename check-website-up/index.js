@@ -10,6 +10,11 @@ async function run() {
     const slackWebhook = core.getInput("slack_webhook_url", { required: false }) || null;
     const octokit = github.getOctokit(githubToken);
 
+
+    console.log(`Checking if ${website} is up...`);
+    console.log(`Using GitHub token: ${githubToken}`);
+    console.log(`Using Slack webhook: ${slackWebhook}`);
+    
     try {
       const res = await axios.get(website, { validateStatus: () => true });
       if (res.status >= 400) {
