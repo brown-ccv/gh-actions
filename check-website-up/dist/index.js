@@ -8501,24 +8501,24 @@ const axios = __nccwpck_require__(4922);
 async function run() {
   try {
     const repo = github.context.repo;
-    const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
+    const githubToken = core.getInput("github_token", {required: true});
     const website = core.getInput("website", {required: true});
     const slackWebhook = core.getInput("slack_webhook_url", { required: false }) || null;
     const octokit = github.getOctokit(githubToken);
-
+    const assignees = core.getInput("assignees", { required: false }).split(",").map(a => a.trim()).filter(Boolean);
 
     console.log(`Checking if ${website} is up...`);
     console.log(`Using GitHub token: ${githubToken}`);
     console.log(`Using Slack webhook: ${slackWebhook}`);
-    
+
     try {
-      const res = await axios.get(website, { validateStatus: () => true });
+      const res = await axios.get(website, { validateStatus: () => true, timeout: 8000 });
       if (res.status >= 400) {
         console.log("Bad status returned from website");
         if (slackWebhook) {
           await notifySlackChannel(website, res.statusText, slackWebhook, repo)
         }
-        await openOrUpdateIssue(website, res.statusText, octokit, repo);
+        await openOrUpdateIssue(website, res.statusText, octokit, repo, assignees);
       } else {
         console.log("Successfully contacted website");
         await closeIssueIfOpen(website, octokit, repo);
@@ -8529,7 +8529,7 @@ async function run() {
         console.log(`Notifying Slack channel with webhook ${slackWebhook}`);
         await notifySlackChannel(website, err.message, slackWebhook, repo)
       }
-      await openOrUpdateIssue(website, err.message, octokit, repo);
+      await openOrUpdateIssue(website, err.message, octokit, repo, assignees);
     }
 
   } catch (error) {
@@ -8551,7 +8551,7 @@ async function notifySlackChannel(website, err, webhook, repo) {
 }
 
 async function checkForOpenIssue(website, repo) {
-  const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
+  const githubToken = core.getInput("github_token", {required: true});
   const octokit = github.getOctokit(githubToken);
 
   const { data: issues } = await octokit.issues.listForRepo({
@@ -8565,7 +8565,7 @@ async function checkForOpenIssue(website, repo) {
   return open_issue
 }
 
-async function openOrUpdateIssue(website, err, octokit, repo) {
+async function openOrUpdateIssue(website, err, octokit, repo, assignees) {
   const open_issue = await checkForOpenIssue(website, repo)
 
   if (open_issue) {
@@ -8582,7 +8582,7 @@ async function openOrUpdateIssue(website, err, octokit, repo) {
       ...repo,
       title,
       body: err,
-      assignees: ["tdivoll", "fordmcdonald"]
+      assignees: assignees.length > 0 ? assignees : undefined
     })
     console.log(`Opened issue`)
   }
