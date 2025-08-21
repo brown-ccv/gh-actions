@@ -12,26 +12,23 @@ async function run() {
     const assignees = core.getInput("assignees", { required: false }).split(",").map(a => a.trim()).filter(Boolean);
 
     console.log(`Checking if ${website} is up...`);
-    console.log(`Using GitHub token: ${githubToken}`);
-    console.log(`Using Slack webhook: ${slackWebhook}`);
 
     try {
       const res = await axios.get(website, { validateStatus: () => true, timeout: 8000 });
       if (res.status >= 400) {
         console.log("Bad status returned from website");
         if (slackWebhook) {
-          await notifySlackChannel(website, res.statusText, slackWebhook, repo)
+          await notifySlackChannel(website, `is down with status: ${res.status} ${res.statusText}`, slackWebhook, repo)
         }
         await openOrUpdateIssue(website, res.statusText, octokit, repo, assignees);
       } else {
         console.log("Successfully contacted website");
-        await closeIssueIfOpen(website, octokit, repo);
+        await closeIssueIfOpen(website, octokit, repo, slackWebhook);
       }
     } catch (err) {
       console.log("Error with get request");
       if (slackWebhook) {
-        console.log(`Notifying Slack channel with webhook ${slackWebhook}`);
-        await notifySlackChannel(website, err.message, slackWebhook, repo)
+        await notifySlackChannel(website, `is unreachable: ${err.message}`, slackWebhook, repo)
       }
       await openOrUpdateIssue(website, err.message, octokit, repo, assignees);
     }
@@ -41,10 +38,10 @@ async function run() {
   }
 }
 
-async function notifySlackChannel(website, err, webhook, repo) {
+async function notifySlackChannel(website, msg, webhook, repo) {
   const open_issue = await checkForOpenIssue(website, repo)
   if (!open_issue) {
-    let text = `${website} is down. Status: ${err}`
+    let text = `${website} ${msg}`;
     try {
       await axios.post(webhook, { text });
       console.log("Sent Slack alert.");
@@ -92,7 +89,7 @@ async function openOrUpdateIssue(website, err, octokit, repo, assignees) {
   }
 }
 
-async function closeIssueIfOpen(website, octokit, repo) {
+async function closeIssueIfOpen(website, octokit, repo, slackWebhook) {
   const open_issue = await checkForOpenIssue(website, repo)
 
   if (open_issue) {
@@ -103,6 +100,9 @@ async function closeIssueIfOpen(website, octokit, repo) {
       state: 'closed'
     })
     console.log(`Closed issue ${issue_number}`)
+    if (slackWebhook) {
+      await notifySlackChannel(website, 'is back up', slackWebhook, repo)
+    }
   }
 }
 
