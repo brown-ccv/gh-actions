@@ -18,7 +18,10 @@ async function run() {
       if (res.status >= 400) {
         console.log("Bad status returned from website");
         if (slackWebhook) {
-          await notifySlackChannel(website, `is down with status: ${res.status} ${res.statusText}`, slackWebhook, repo)
+          const open_issue = await checkForOpenIssue(website, repo)
+          if (!open_issue) {
+            await notifySlackChannel(website, `is down with status: ${res.status} ${res.statusText}`, slackWebhook)
+          }
         }
         await openOrUpdateIssue(website, res.statusText, octokit, repo, assignees);
       } else {
@@ -28,7 +31,10 @@ async function run() {
     } catch (err) {
       console.log("Error with get request");
       if (slackWebhook) {
-        await notifySlackChannel(website, `is unreachable: ${err.message}`, slackWebhook, repo)
+        const open_issue = await checkForOpenIssue(website, repo)
+        if(!open_issue) {
+            await notifySlackChannel(website, `is unreachable: ${err.message}`, slackWebhook)
+        }
       }
       await openOrUpdateIssue(website, err.message, octokit, repo, assignees);
     }
@@ -38,16 +44,13 @@ async function run() {
   }
 }
 
-async function notifySlackChannel(website, msg, webhook, repo) {
-  const open_issue = await checkForOpenIssue(website, repo)
-  if (!open_issue) {
-    let text = `${website} ${msg}`;
-    try {
-      await axios.post(webhook, { text });
-      console.log("Sent Slack alert.");
-    } catch (err) {
-      console.error("Failed to send Slack alert:", err.message);
-    }
+async function notifySlackChannel(website, msg, webhook) {
+  let text = `${website} ${msg}`;
+  try {
+    await axios.post(webhook, { text });
+    console.log("Sent Slack alert.");
+  } catch (err) {
+    console.error("Failed to send Slack alert:", err.message);
   }
 }
 
@@ -102,7 +105,7 @@ async function closeIssueIfOpen(website, octokit, repo, slackWebhook) {
     })
     console.log(`Closed issue ${issue_number}`)
     if (slackWebhook) {
-      await notifySlackChannel(website, 'is back up', slackWebhook, repo)
+      await notifySlackChannel(website, 'is back up', slackWebhook)
     }
   }
 }
