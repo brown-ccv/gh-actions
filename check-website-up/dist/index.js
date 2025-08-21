@@ -8514,10 +8514,8 @@ async function run() {
       if (res.status >= 400) {
         console.log("Bad status returned from website");
         const open_issue = await checkForOpenIssue(website, repo)
-        if (slackWebhook) {
-          if (!open_issue) {
-            await notifySlackChannel(website, `is down with status: ${res.status} ${res.statusText}`, slackWebhook)
-          }
+        if (slackWebhook && !open_issue) {
+          await notifySlackChannel(website, `is down with status: ${res.status} ${res.statusText}`, slackWebhook)
         }
         await openOrUpdateIssue(website, res.statusText, octokit, repo, assignees, open_issue);
       } else {
@@ -8527,10 +8525,8 @@ async function run() {
     } catch (err) {
       console.log("Error with get request");
       const open_issue = await checkForOpenIssue(website, repo)
-      if (slackWebhook) {
-        if (!open_issue) {
-            await notifySlackChannel(website, `is unreachable: ${err.message}`, slackWebhook)
-        }
+      if (slackWebhook && !open_issue) {
+        await notifySlackChannel(website, `is unreachable: ${err.message}`, slackWebhook)
       }
       await openOrUpdateIssue(website, err.message, octokit, repo, assignees, open_issue);
     }
