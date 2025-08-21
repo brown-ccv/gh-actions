@@ -25,7 +25,7 @@ async function run() {
         await openOrUpdateIssue(website, res.statusText, octokit, repo, assignees);
       } else {
         console.log("Successfully contacted website");
-        await closeIssueIfOpen(website, octokit, repo);
+        await closeIssueIfOpen(website, octokit, repo, slackWebhook);
       }
     } catch (err) {
       console.log("Error with get request");
@@ -92,7 +92,7 @@ async function openOrUpdateIssue(website, err, octokit, repo, assignees) {
   }
 }
 
-async function closeIssueIfOpen(website, octokit, repo) {
+async function closeIssueIfOpen(website, octokit, repo, slackWebhook) {
   const open_issue = await checkForOpenIssue(website, repo)
 
   if (open_issue) {
@@ -103,6 +103,9 @@ async function closeIssueIfOpen(website, octokit, repo) {
       state: 'closed'
     })
     console.log(`Closed issue ${issue_number}`)
+    if (slackWebhook) {
+      await notifySlackChannel(website, 'is back up', slackWebhook, repo)
+    }
   }
 }
 
