@@ -74,7 +74,7 @@ async function openOrUpdateIssue(website, err, octokit, repo, assignees) {
     await octokit.issues.createComment({
       ...repo,
       issue_number,
-      body: `still down:\n\n${err}`
+      body: `Still down...\n\n${err}`
     })
     console.log(`Updated issue ${issue_number}`)
   } else {
