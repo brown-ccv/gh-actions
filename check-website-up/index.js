@@ -83,6 +83,7 @@ async function openOrUpdateIssue(website, err, octokit, repo, assignees) {
       ...repo,
       title,
       body: err,
+      labels: ['bug'],
       assignees: assignees.length > 0 ? assignees : undefined
     })
     console.log(`Opened issue`)
