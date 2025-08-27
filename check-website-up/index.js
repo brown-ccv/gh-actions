@@ -14,7 +14,7 @@ async function run() {
     console.log(`Checking if ${website} is up...`);
 
     try {
-      const res = await axios.get(website, { validateStatus: () => true, timeout: 8000 });
+      const res = await axios.get(website, { validateStatus: () => true, timeout: 15000 });
       if (res.status >= 400) {
         console.log("Bad status returned from website");
         const open_issue = await checkForOpenIssue(website, repo)
