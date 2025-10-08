@@ -12,20 +12,9 @@ async function run() {
     const assignees = core.getInput("assignees", { required: false }).split(",").map(a => a.trim()).filter(Boolean);
 
     console.log(`Checking if ${website} is up...`);
-
+    let res = null;
     try {
-      const res = await axios.get(website, { validateStatus: () => true, timeout: 15000 });
-      if (res.status >= 400) {
-        console.log("Bad status returned from website");
-        const open_issue = await checkForOpenIssue(website, repo)
-        if (slackWebhook && !open_issue) {
-          await notifySlackChannel(website, `is down with status: ${res.status} ${res.statusText}`, slackWebhook)
-        }
-        await openOrUpdateIssue(website, res.statusText, octokit, repo, assignees, open_issue);
-      } else {
-        console.log("Successfully contacted website");
-        await closeIssueIfOpen(website, octokit, repo, slackWebhook);
-      }
+      res = await axios.get(website, { validateStatus: () => true, timeout: 15000 });
     } catch (err) {
       console.log("Error with get request");
       const open_issue = await checkForOpenIssue(website, repo)
@@ -33,6 +22,19 @@ async function run() {
         await notifySlackChannel(website, `is unreachable: ${err.message}`, slackWebhook)
       }
       await openOrUpdateIssue(website, err.message, octokit, repo, assignees, open_issue);
+      return;
+    }
+
+    if (res.status >= 400) {
+      console.log("Bad status returned from website");
+      const open_issue = await checkForOpenIssue(website, repo)
+      if (slackWebhook && !open_issue) {
+        await notifySlackChannel(website, `is down with status: ${res.status} ${res.statusText}`, slackWebhook)
+      }
+      await openOrUpdateIssue(website, res.statusText, octokit, repo, assignees, open_issue);
+    } else {
+      console.log("Successfully contacted website");
+      await closeIssueIfOpen(website, octokit, repo, slackWebhook);
     }
 
   } catch (error) {
@@ -61,8 +63,8 @@ async function checkForOpenIssue(website, repo) {
 
   const title = `${website} Down`;
   const open_issue = issues.find(issue => issue.title.startsWith(title));
-  
-  return open_issue
+
+  return open_issue;
 }
 
 async function openOrUpdateIssue(website, err, octokit, repo, assignees, open_issue) {
