@@ -22,6 +22,7 @@ async function run() {
         await notifySlackChannel(website, `is unreachable: ${err.message}`, slackWebhook)
       }
       await openOrUpdateIssue(website, err.message, octokit, repo, assignees, open_issue);
+      return;
     }
 
     if (res.status >= 400) {
