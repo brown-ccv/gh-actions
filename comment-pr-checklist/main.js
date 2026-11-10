@@ -1,9 +1,9 @@
 const core = require('@actions/core');
-const { context, GitHub } = require('@actions/github');
 const { findPreviousComment, createComment, findFirstComment, getCommentTypes } = require("./comments");
 
 async function run() {
   try {
+    const { context, getOctokit } = await import('@actions/github');
     const repo = context.repo;
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
@@ -15,7 +15,7 @@ async function run() {
       return;
     }
 
-    const octokit = new GitHub(githubToken);
+    const octokit = getOctokit(githubToken);
     const previous = await findPreviousComment(octokit, repo, number, messageId);
     if (previous) {
       return;
