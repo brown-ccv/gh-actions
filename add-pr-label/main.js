@@ -1,8 +1,8 @@
-const core = require('@actions/core');
-const { context, GitHub } = require('@actions/github');
+import * as core from '@actions/core';
+import { context, getOctokit } from '@actions/github';
 
 async function applyLabel(octokit, repo, issue_number, newLabel) {
-	await octokit.issues.addLabels({
+	await octokit.rest.issues.addLabels({
 		...repo,
 		issue_number,
 		labels: [newLabel]
@@ -21,7 +21,7 @@ async function run() {
       return;
     }
 
-    const octokit = new GitHub(githubToken);
+    const octokit = getOctokit(githubToken);
     await applyLabel(octokit, repo, number, label);
 
   } catch ({ message }) {
