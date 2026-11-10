@@ -38,7 +38,7 @@ function removeJunkAndValidateYML(contents){
 }
 
 async function getIssueBody(octokit, repo, issue_number) {
-  const { data: issue } = await octokit.issues.get({
+  const { data: issue } = await octokit.rest.issues.get({
     ...repo,
     issue_number
   });

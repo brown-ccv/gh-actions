@@ -1,9 +1,9 @@
 const core = require('@actions/core');
-const { context, GitHub } = require('@actions/github');
 const { getIssueBody, getYMLFileContent } = require("./util");
 
 async function run() {
   try {
+    const { context, getOctokit } = await import('@actions/github');
     const repo = context.repo;
     const number = context.issue.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
@@ -13,10 +13,11 @@ async function run() {
       return;
     }
 
-    const octokit = new GitHub(githubToken);
+    const octokit = getOctokit(githubToken);
 
-    const issue = await getIssueBody(octokit, repo, number)
-    if(issue.labels.filter(function(item){ return item['name']==='data request'; })!==[]){
+    const issue = await getIssueBody(octokit, repo, number);
+
+    if (issue.labels.some(item => item.name === 'data request')) {
       const file = getYMLFileContent(issue);
       if(file[0]===null || file[1]===null || file[1]===""){
         core.setFailed("The issue yml template is not valid.");
