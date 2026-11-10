@@ -1,9 +1,9 @@
-const core = require('@actions/core');
+import core from '@actions/core';
+import { context, getOctokit } from '@actions/github';
 const { getIssueBody, getYMLFileContent } = require("./util");
 
 async function run() {
   try {
-    const { context, getOctokit } = await import('@actions/github');
     const repo = context.repo;
     const number = context.issue.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
