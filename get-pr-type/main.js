@@ -1,9 +1,9 @@
 const core = require('@actions/core');
-const { context, GitHub } = require('@actions/github');
 const { getPrBody, getChangeTypes } = require("./comments");
 
 async function run() {
   try {
+    const { context, getOctokit } = await import('@actions/github');
     const repo = context.repo;
     const number = context.payload.pull_request.number;
     const githubToken = core.getInput("GITHUB_TOKEN", {required: true});
@@ -13,7 +13,7 @@ async function run() {
       return;
     }
 
-    const octokit = new GitHub(githubToken);
+    const octokit = getOctokit(githubToken);
 
     const pr = await getPrBody(octokit, repo, number)
     const changeTypes = getChangeTypes(pr)

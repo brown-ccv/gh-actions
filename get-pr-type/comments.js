@@ -17,7 +17,7 @@ function getChangeTypes(body) {
 }
 
 async function getPrBody(octokit, repo, issue_number) {
-  const { data: comments } = await octokit.issues.get({
+  const { data: comments } = await octokit.rest.issues.get({
     ...repo,
     issue_number
   });
