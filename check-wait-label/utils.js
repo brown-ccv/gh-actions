@@ -1,5 +1,5 @@
 async function getPrIds(octokit, repo, waitLabel) {
-  const { data: prs } = await octokit.issues.listForRepo({
+  const { data: prs } = await octokit.rest.issues.listForRepo({
     ...repo,
     state: 'open'
   });
@@ -8,7 +8,7 @@ async function getPrIds(octokit, repo, waitLabel) {
 }
 
 async function getPrTime(octokit, repo, pull_number) {
-  const { data: commits } = await octokit.pulls.listCommits({
+  const { data: commits } = await octokit.rest.pulls.listCommits({
     ...repo,
     pull_number
   });
@@ -22,13 +22,13 @@ async function getPrTime(octokit, repo, pull_number) {
 }
 
 async function removeLabel(octokit, repo, issue_number, oldLabel) {
-	const { data: labels } = await octokit.issues.listLabelsOnIssue({
+	const { data: labels } = await octokit.rest.issues.listLabelsOnIssue({
 		...repo,
 		issue_number
 	})
 
 	if (labels.find(label => label.name === oldLabel)) {
-		await octokit.issues.removeLabel({
+		await octokit.rest.issues.removeLabel({
 			...repo,
 			issue_number,
 			name: oldLabel
@@ -37,7 +37,7 @@ async function removeLabel(octokit, repo, issue_number, oldLabel) {
 }
 
 async function applyLabel(octokit, repo, issue_number, newLabel) {
-	await octokit.issues.addLabels({
+	await octokit.rest.issues.addLabels({
 		...repo,
 		issue_number,
 		labels: [newLabel]

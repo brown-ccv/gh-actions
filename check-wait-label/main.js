@@ -1,5 +1,5 @@
-const core = require('@actions/core');
-const { context, GitHub } = require('@actions/github');
+import core  from '@actions/core';
+import { context, getOctokit } from '@actions/github';
 const { getPrTime, applyLabel, removeLabel, getPrIds, getWeekendDaysCount } = require("./utils");
 
 async function run() {
@@ -10,7 +10,7 @@ async function run() {
     const waitLabel = core.getInput("wait_label")
     const doneLabel = core.getInput("done_waiting_label")
 
-    const octokit = new GitHub(githubToken)
+    const octokit = getOctokit(githubToken)
 
     const prs = await getPrIds(octokit, repo, waitLabel)
 
